@@ -171,13 +171,23 @@ const apiKeys = {
 async function encryptApiKey(apiKey) {
     // For MVP, we'll use base64 encoding
     // In production, use proper AES encryption
-    return btoa(apiKey);
+    try {
+        return btoa(apiKey);
+    } catch (e) {
+        console.error('Encryption error:', e);
+        return apiKey; // Return as-is if encoding fails
+    }
 }
 
 async function decryptApiKey(encryptedKey) {
     // For MVP, simple base64 decoding
     // In production, use proper AES decryption
-    return atob(encryptedKey);
+    try {
+        return atob(encryptedKey);
+    } catch (e) {
+        console.error('Decryption error:', e);
+        return encryptedKey; // Return as-is if decoding fails
+    }
 }
 
 // Export for use in other modules

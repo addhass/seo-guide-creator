@@ -201,7 +201,15 @@ app.post('/test-api-key', async (req, res) => {
                 return res.json({ valid: true, message: 'Anthropic API key is valid' });
             }
             
-            return res.json({ valid: false, error: 'Invalid Anthropic API key' });
+            const errorText = await response.text();
+            console.error('Anthropic API error:', response.status, errorText);
+            
+            try {
+                const errorData = JSON.parse(errorText);
+                return res.json({ valid: false, error: errorData.error?.message || 'Invalid Anthropic API key' });
+            } catch {
+                return res.json({ valid: false, error: `Invalid Anthropic API key (${response.status})` });
+            }
         }
         
         return res.status(400).json({ error: 'Unknown service' });
