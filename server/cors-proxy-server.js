@@ -249,10 +249,20 @@ app.post('/claude-api', async (req, res) => {
         }
         
         if (!apiKey) {
-            return res.status(401).json({ error: 'Anthropic API key not configured. Please add your API key in the dashboard.' });
+            console.log('No Anthropic API key found. req.apiKeys:', req.apiKeys);
+            console.log('Environment ANTHROPIC_API_KEY:', process.env.ANTHROPIC_API_KEY ? 'Set' : 'Not set');
+            return res.status(401).json({ 
+                error: 'Anthropic API key not configured. Please add your API key in the dashboard.',
+                debug: {
+                    hasUserKeys: !!req.apiKeys,
+                    userKeysAvailable: Object.keys(req.apiKeys || {}),
+                    hasEnvKey: !!process.env.ANTHROPIC_API_KEY
+                }
+            });
         }
 
         console.log('Proxying Claude API request...');
+        console.log('Using API key from:', req.apiKeys?.anthropic ? 'user storage' : 'environment');
         
         const claudeResponse = await fetch('https://api.anthropic.com/v1/messages', {
             method: 'POST',
@@ -487,9 +497,18 @@ app.post('/analyze-keywords-tsv', async (req, res) => {
         });
         
         if (keywordIndex === -1 || searchVolumeIndex === -1) {
+            console.error('❌ Column parsing failed:');
+            console.error('   Available columns:', header);
+            console.error('   Keyword index:', keywordIndex);
+            console.error('   Search volume index:', searchVolumeIndex);
             return res.status(400).json({ 
                 error: 'Could not find required columns (Keyword, Search Volume)',
-                foundColumns: header
+                foundColumns: header,
+                details: {
+                    keywordColumnFound: keywordIndex !== -1,
+                    searchVolumeColumnFound: searchVolumeIndex !== -1,
+                    hint: 'Ensure TSV has "Keyword" and "Search Volume" columns'
+                }
             });
         }
 

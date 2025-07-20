@@ -9,7 +9,7 @@ async function getAuthToken() {
     }
     
     try {
-        const { data: { session } } = await supabase.auth.getSession();
+        const { data: { session } } = await window.supabaseClient.auth.getSession();
         return session?.access_token || null;
     } catch (error) {
         console.error('Error getting auth token:', error);

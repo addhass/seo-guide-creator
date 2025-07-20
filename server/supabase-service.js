@@ -113,6 +113,8 @@ async function authenticateRequest(req, res, next) {
         // This maintains backward compatibility
         console.warn('Authentication failed:', error.message);
         console.log('Auth error details:', error.stack);
+        console.log('Supabase configured:', !!supabase);
+        console.log('Auth header present:', !!req.headers.authorization);
         req.apiKeys = {}; // Empty keys object
         next();
     }
