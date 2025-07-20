@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Database Tables - SEO Guide Creator</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .step {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 4px solid #24b47e;
+        }
+        .step h3 {
+            margin-top: 0;
+            color: #24b47e;
+        }
+        .code-block {
+            background: #f1f3f5;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-family: monospace;
+            font-size: 14px;
+            border: 1px solid #dee2e6;
+            margin: 15px 0;
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #24b47e;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .copy-btn:hover {
+            background: #1a8b60;
+        }
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        a {
+            color: #24b47e;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .button {
+            display: inline-block;
+            background: #24b47e;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+        .button:hover {
+            background: #1a8b60;
+            text-decoration: none;
+        }
+        .sql-content {
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Setup Database Tables</h1>
+        
+        <div class="warning">
+            <strong>Important:</strong> These tables need to be created manually in your Supabase SQL editor.
+        </div>
+
+        <div class="step">
+            <h3>Step 1: Open Supabase SQL Editor</h3>
+            <p>Click the button below to open your Supabase SQL editor in a new tab:</p>
+            <a href="https://supabase.com/dashboard/project/jdqdfejuesqbcxjwbcwl/sql/new" target="_blank" class="button">
+                Open SQL Editor →
+            </a>
+        </div>
+
+        <div class="step">
+            <h3>Step 2: Copy the SQL Code</h3>
+            <p>Copy all of the SQL code below:</p>
+            <div class="code-block">
+                <button class="copy-btn" onclick="copySQL()">Copy SQL</button>
+                <pre id="sqlCode" class="sql-content">-- Enable UUID extension
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- Create api_keys table
+CREATE TABLE IF NOT EXISTS api_keys (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+    service VARCHAR(50) NOT NULL CHECK (service IN ('dataforseo', 'anthropic')),
+    encrypted_key TEXT NOT NULL,
+    key_hint VARCHAR(10),
+    is_valid BOOLEAN DEFAULT true,
+    last_validated TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    UNIQUE(user_id, service)
+);
+
+-- Create usage_logs table
+CREATE TABLE IF NOT EXISTS usage_logs (
+    id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+    action VARCHAR(50) NOT NULL,
+    details JSONB,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Create user_settings table
+CREATE TABLE IF NOT EXISTS user_settings (
+    user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
+    settings JSONB DEFAULT '{}',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Create indexes
+CREATE INDEX IF NOT EXISTS idx_api_keys_user_id ON api_keys(user_id);
+CREATE INDEX IF NOT EXISTS idx_usage_logs_user_id ON usage_logs(user_id);
+CREATE INDEX IF NOT EXISTS idx_usage_logs_created_at ON usage_logs(created_at);
+
+-- Enable RLS
+ALTER TABLE api_keys ENABLE ROW LEVEL SECURITY;
+ALTER TABLE usage_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE user_settings ENABLE ROW LEVEL SECURITY;
+
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Users can view own api keys" ON api_keys;
+DROP POLICY IF EXISTS "Users can insert own api keys" ON api_keys;
+DROP POLICY IF EXISTS "Users can update own api keys" ON api_keys;
+DROP POLICY IF EXISTS "Users can delete own api keys" ON api_keys;
+DROP POLICY IF EXISTS "Users can view own usage logs" ON usage_logs;
+DROP POLICY IF EXISTS "Users can insert own usage logs" ON usage_logs;
+DROP POLICY IF EXISTS "Users can view own settings" ON user_settings;
+DROP POLICY IF EXISTS "Users can manage own settings" ON user_settings;
+
+-- API Keys policies
+CREATE POLICY "Users can view own api keys" 
+    ON api_keys FOR SELECT 
+    USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert own api keys" 
+    ON api_keys FOR INSERT 
+    WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Users can update own api keys" 
+    ON api_keys FOR UPDATE 
+    USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can delete own api keys" 
+    ON api_keys FOR DELETE 
+    USING (auth.uid() = user_id);
+
+-- Usage logs policies
+CREATE POLICY "Users can view own usage logs" 
+    ON usage_logs FOR SELECT 
+    USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can insert own usage logs" 
+    ON usage_logs FOR INSERT 
+    WITH CHECK (auth.uid() = user_id);
+
+-- User settings policies
+CREATE POLICY "Users can view own settings" 
+    ON user_settings FOR SELECT 
+    USING (auth.uid() = user_id);
+
+CREATE POLICY "Users can manage own settings" 
+    ON user_settings FOR ALL 
+    USING (auth.uid() = user_id);
+
+-- Function to update the updated_at timestamp
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = NOW();
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+-- Triggers for updated_at
+DROP TRIGGER IF EXISTS update_api_keys_updated_at ON api_keys;
+CREATE TRIGGER update_api_keys_updated_at BEFORE UPDATE ON api_keys
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+DROP TRIGGER IF EXISTS update_user_settings_updated_at ON user_settings;
+CREATE TRIGGER update_user_settings_updated_at BEFORE UPDATE ON user_settings
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();</pre>
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>Step 3: Run the SQL</h3>
+            <ol>
+                <li>Paste the SQL code into the Supabase SQL editor</li>
+                <li>Click the "Run" button or press <kbd>Cmd</kbd>+<kbd>Enter</kbd> (Mac) or <kbd>Ctrl</kbd>+<kbd>Enter</kbd> (Windows)</li>
+                <li>You should see "Success. No rows returned" message</li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h3>Step 4: Configure Authentication URLs</h3>
+            <p>In your Supabase dashboard, go to <strong>Authentication → URL Configuration</strong> and add:</p>
+            <ul>
+                <li><strong>Site URL:</strong> <code>https://addhass.github.io</code></li>
+                <li><strong>Redirect URLs:</strong> 
+                    <ul>
+                        <li><code>https://addhass.github.io/seo-guide-creator/auth.html</code></li>
+                        <li><code>https://addhass.github.io/seo-guide-creator/dashboard.html</code></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="success">
+            <h3>✅ After Setup is Complete</h3>
+            <p>Once you've created the tables and configured the URLs, you can:</p>
+            <ol>
+                <li>Test the authentication: <a href="auth.html" target="_blank">Open Auth Page</a></li>
+                <li>Sign up for a new account</li>
+                <li>Add your API keys in the dashboard</li>
+                <li>Start using the SEO Guide Creator with your own API keys!</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function copySQL() {
+            const sqlCode = document.getElementById('sqlCode').textContent;
+            navigator.clipboard.writeText(sqlCode).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.textContent = 'Copied!';
+                setTimeout(() => {
+                    btn.textContent = 'Copy SQL';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
