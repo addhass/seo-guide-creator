@@ -17,6 +17,25 @@
     <meta name="pragma" content="no-cache">
     
     <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .login-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .api-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
     <div class="app-container">
@@ -28,16 +47,30 @@
                     <span>Product Description Guide Builder</span>
                 </a>
                 <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.875rem; color: var(--muted-text);">
+                    <div id="dataforSeoStatus" class="api-status">
+                        <span class="status-dot" id="dataforSeoStatusDot" style="background-color: #FFA500;"></span>
+                        <span id="dataforSeoStatusText">DataForSEO: Checking...</span>
+                    </div>
                     <div id="claudeApiStatus" class="api-status">
-                        <span class="status-dot" id="claudeStatusDot" style="background-color: green;"></span>
-                        <span>Claude API: Ready</span>
+                        <span class="status-dot" id="claudeStatusDot" style="background-color: #FFA500;"></span>
+                        <span id="claudeStatusText">Claude API: Checking...</span>
                     </div>
                     <div id="proxyStatus" class="api-status">
                         <span class="status-dot" id="proxyStatusDot" style="background-color: #6B7280;"></span>
                         <span id="proxyStatusText">Proxy: Checking...</span>
                     </div>
                     <span style="color: var(--secondary-color); font-weight: 500;">v2.0</span>
-                    <span id="lastUpdated">Loading...</span>
+                    <button id="loginBtn" class="login-btn" style="
+                        background: var(--primary-color);
+                        color: white;
+                        border: none;
+                        padding: 0.5rem 1rem;
+                        border-radius: var(--radius-md);
+                        cursor: pointer;
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                        transition: all 0.2s;
+                    ">Login</button>
                 </div>
             </div>
         </header>

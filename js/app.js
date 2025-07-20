@@ -14,6 +14,9 @@ class ProductGuideApp {
         console.log('🚀 Initializing Product Description Guide Builder...');
 
         try {
+            // Initialize Supabase first
+            await this.initializeAuth();
+            
             // Initialize modules
             await this.initializeModules();
             
@@ -26,12 +29,175 @@ class ProductGuideApp {
             // Initialize header components
             this.initializeHeader();
             
+            // Check authentication status
+            await this.checkAuthStatus();
+            
             console.log('✅ Application initialized successfully');
             this.initialized = true;
             
         } catch (error) {
             console.error('❌ Application initialization failed:', error);
             this.showInitializationError(error);
+        }
+    }
+
+    // Initialize authentication
+    async initializeAuth() {
+        console.log('🔐 Initializing authentication...');
+        
+        if (window.supabaseClient && window.supabaseClient.init) {
+            await window.supabaseClient.init();
+            console.log('✅ Supabase initialized');
+        } else {
+            console.warn('⚠️ Supabase client not found');
+        }
+    }
+    
+    // Check authentication status and API keys
+    async checkAuthStatus() {
+        console.log('🔍 Checking authentication status...');
+        
+        const loginBtn = document.getElementById('loginBtn');
+        
+        try {
+            // Check if user is logged in
+            const user = await window.supabaseClient.auth.getUser();
+            
+            if (user) {
+                // User is logged in
+                console.log('✅ User authenticated:', user.email);
+                
+                // Update login button
+                if (loginBtn) {
+                    loginBtn.textContent = 'Dashboard';
+                    loginBtn.style.background = '#10B981'; // Green
+                    loginBtn.onclick = () => {
+                        window.location.href = 'dashboard.html';
+                    };
+                }
+                
+                // Check API keys status
+                await this.checkApiKeysStatus();
+                
+            } else {
+                // User is not logged in
+                console.log('❌ User not authenticated');
+                
+                // Update login button
+                if (loginBtn) {
+                    loginBtn.textContent = 'Login';
+                    loginBtn.style.background = 'var(--primary-color)';
+                    loginBtn.onclick = () => {
+                        window.location.href = 'auth.html';
+                    };
+                }
+                
+                // Update API status indicators
+                this.updateApiStatus('dataforSeo', 'not-configured', 'DataForSEO: Login Required');
+                this.updateApiStatus('claude', 'not-configured', 'Claude API: Login Required');
+            }
+        } catch (error) {
+            console.error('Error checking auth status:', error);
+            
+            // Default to logged out state
+            if (loginBtn) {
+                loginBtn.textContent = 'Login';
+                loginBtn.onclick = () => {
+                    window.location.href = 'auth.html';
+                };
+            }
+        }
+    }
+    
+    // Check API keys status
+    async checkApiKeysStatus() {
+        console.log('🔑 Checking API keys status...');
+        
+        try {
+            // Get all API keys for the user
+            const apiKeys = await window.supabaseClient.apiKeys.getAll();
+            
+            if (apiKeys.data) {
+                // Check DataForSEO
+                const dataforSeoKey = apiKeys.data.find(key => key.service === 'dataforseo');
+                if (dataforSeoKey) {
+                    this.updateApiStatus('dataforSeo', 'configured', 'DataForSEO: Configured');
+                    // Test the key
+                    this.testApiKey('dataforseo');
+                } else {
+                    this.updateApiStatus('dataforSeo', 'not-configured', 'DataForSEO: Not Configured');
+                }
+                
+                // Check Anthropic
+                const anthropicKey = apiKeys.data.find(key => key.service === 'anthropic');
+                if (anthropicKey) {
+                    this.updateApiStatus('claude', 'configured', 'Claude API: Configured');
+                    // Test the key
+                    this.testApiKey('anthropic');
+                } else {
+                    this.updateApiStatus('claude', 'not-configured', 'Claude API: Not Configured');
+                }
+            }
+        } catch (error) {
+            console.error('Error checking API keys:', error);
+            this.updateApiStatus('dataforSeo', 'error', 'DataForSEO: Error');
+            this.updateApiStatus('claude', 'error', 'Claude API: Error');
+        }
+    }
+    
+    // Test API key validity
+    async testApiKey(service) {
+        try {
+            const result = await window.supabaseClient.apiKeys.test(service);
+            
+            if (result.success) {
+                if (service === 'dataforseo') {
+                    this.updateApiStatus('dataforSeo', 'active', 'DataForSEO: Active');
+                } else if (service === 'anthropic') {
+                    this.updateApiStatus('claude', 'active', 'Claude API: Active');
+                }
+            } else {
+                if (service === 'dataforseo') {
+                    this.updateApiStatus('dataforSeo', 'invalid', 'DataForSEO: Invalid Key');
+                } else if (service === 'anthropic') {
+                    this.updateApiStatus('claude', 'invalid', 'Claude API: Invalid Key');
+                }
+            }
+        } catch (error) {
+            console.error(`Error testing ${service} key:`, error);
+        }
+    }
+    
+    // Update API status indicator
+    updateApiStatus(api, status, text) {
+        const dotId = api === 'dataforSeo' ? 'dataforSeoStatusDot' : 'claudeStatusDot';
+        const textId = api === 'dataforSeo' ? 'dataforSeoStatusText' : 'claudeStatusText';
+        
+        const dot = document.getElementById(dotId);
+        const textEl = document.getElementById(textId);
+        
+        if (dot && textEl) {
+            switch (status) {
+                case 'active':
+                    dot.style.backgroundColor = '#10B981'; // Green
+                    break;
+                case 'configured':
+                    dot.style.backgroundColor = '#3B82F6'; // Blue
+                    break;
+                case 'invalid':
+                    dot.style.backgroundColor = '#EF4444'; // Red
+                    break;
+                case 'not-configured':
+                    dot.style.backgroundColor = '#FFA500'; // Orange
+                    break;
+                case 'error':
+                    dot.style.backgroundColor = '#6B7280'; // Gray
+                    break;
+                default:
+                    dot.style.backgroundColor = '#FFA500'; // Orange
+            }
+            
+            textEl.textContent = text;
         }
     }
 
