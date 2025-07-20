@@ -139,6 +139,15 @@ const apiKeys = {
 
         // Call our backend to test the key
         try {
+            // For DataForSEO, format as login:password
+            let apiKey = data.decrypted_key;
+            if (service === 'dataforseo') {
+                // If it doesn't contain a colon, assume it needs formatting
+                if (!apiKey.includes(':')) {
+                    return { success: false, error: 'DataForSEO key must be in format: email:password' };
+                }
+            }
+            
             const response = await fetch(`${window.API_CONFIG.API_BASE_URL}/test-api-key`, {
                 method: 'POST',
                 headers: {
@@ -146,7 +155,7 @@ const apiKeys = {
                 },
                 body: JSON.stringify({
                     service,
-                    apiKey: data.decrypted_key
+                    apiKey: apiKey
                 })
             });
 

@@ -145,6 +145,73 @@ app.get('/fetch-page', async (req, res) => {
     }
 });
 
+// Test API key endpoint
+app.post('/test-api-key', async (req, res) => {
+    try {
+        const { service, apiKey } = req.body;
+        
+        if (!service || !apiKey) {
+            return res.status(400).json({ error: 'Service and API key required' });
+        }
+        
+        if (service === 'dataforseo') {
+            // Test DataForSEO API
+            const [login, password] = apiKey.split(':');
+            
+            const response = await fetch('https://api.dataforseo.com/v3/serp/google/organic/live/advanced', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic ' + Buffer.from(`${login}:${password}`).toString('base64')
+                },
+                body: JSON.stringify([{
+                    "keyword": "test",
+                    "location_code": 2826,
+                    "language_code": "en",
+                    "depth": 1
+                }])
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                if (data.status_code === 20000) {
+                    return res.json({ valid: true, message: 'DataForSEO API key is valid' });
+                }
+            }
+            
+            return res.json({ valid: false, error: 'Invalid DataForSEO credentials' });
+            
+        } else if (service === 'anthropic') {
+            // Test Anthropic API
+            const response = await fetch('https://api.anthropic.com/v1/messages', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': apiKey,
+                    'anthropic-version': '2023-06-01'
+                },
+                body: JSON.stringify({
+                    model: 'claude-3-sonnet-20240229',
+                    max_tokens: 10,
+                    messages: [{ role: 'user', content: 'Hi' }]
+                })
+            });
+            
+            if (response.ok) {
+                return res.json({ valid: true, message: 'Anthropic API key is valid' });
+            }
+            
+            return res.json({ valid: false, error: 'Invalid Anthropic API key' });
+        }
+        
+        return res.status(400).json({ error: 'Unknown service' });
+        
+    } catch (error) {
+        console.error('API test error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // Claude API proxy endpoint
 app.post('/claude-api', async (req, res) => {
     try {
