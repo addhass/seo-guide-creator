@@ -191,7 +191,7 @@ app.post('/test-api-key', async (req, res) => {
                     'anthropic-version': '2023-06-01'
                 },
                 body: JSON.stringify({
-                    model: 'claude-3-sonnet-20240229',
+                    model: 'claude-3-haiku-20240307',
                     max_tokens: 10,
                     messages: [{ role: 'user', content: 'Hi' }]
                 })
@@ -223,7 +223,7 @@ app.post('/test-api-key', async (req, res) => {
 // Claude API proxy endpoint
 app.post('/claude-api', async (req, res) => {
     try {
-        const { messages, model = 'claude-3-5-sonnet-20241022', max_tokens = 500 } = req.body;
+        const { messages, model = 'claude-3-haiku-20240307', max_tokens = 500 } = req.body;
         
         if (!messages) {
             return res.status(400).json({ error: 'Messages parameter is required' });
