@@ -160,7 +160,7 @@ app.post('/claude-api', async (req, res) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'x-api-key': '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',
+                'x-api-key': process.env.ANTHROPIC_API_KEY || '',
                 'anthropic-version': '2023-06-01'
             },
             body: JSON.stringify({
@@ -1013,7 +1013,7 @@ Be specific and actionable in your analysis. Focus on insights that would help w
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'x-api-key': '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',
+                'x-api-key': process.env.ANTHROPIC_API_KEY || '',
                 'anthropic-version': '2023-06-01'
             },
             body: JSON.stringify({
