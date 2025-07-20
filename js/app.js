@@ -89,6 +89,16 @@ class ProductGuideApp {
                     };
                 }
                 
+                // Show logout button
+                const logoutBtn = document.getElementById('logoutBtn');
+                if (logoutBtn) {
+                    logoutBtn.style.display = 'block';
+                    logoutBtn.onclick = async () => {
+                        await window.supabaseClient.auth.signOut();
+                        window.location.reload();
+                    };
+                }
+                
                 // Check API keys status
                 await this.checkApiKeysStatus();
                 
@@ -128,9 +138,11 @@ class ProductGuideApp {
         
         try {
             // Get all API keys for the user
-            const apiKeys = await window.supabaseClient.apiKeys.getAll();
+            const result = await window.supabaseClient.apiKeys.getAll();
+            console.log('API Keys result:', result);
             
-            if (apiKeys.data) {
+            if (result.data) {
+                const apiKeys = result;
                 // Check DataForSEO
                 const dataforSeoKey = apiKeys.data.find(key => key.service === 'dataforseo');
                 if (dataforSeoKey) {
@@ -153,8 +165,11 @@ class ProductGuideApp {
             }
         } catch (error) {
             console.error('Error checking API keys:', error);
-            this.updateApiStatus('dataforSeo', 'error', 'DataForSEO: Error');
-            this.updateApiStatus('claude', 'error', 'Claude API: Error');
+            this.updateApiStatus('dataforSeo', 'error', `DataForSEO: Error - ${error.message}`);
+            this.updateApiStatus('claude', 'error', `Claude API: Error - ${error.message}`);
+            
+            // Show more detailed error in console
+            console.error('Full error details:', error.stack);
         }
     }
     
@@ -430,7 +445,8 @@ class ProductGuideApp {
         const proxyStatusText = document.getElementById('proxyStatusText');
         
         try {
-            const response = await fetch('http://localhost:3001/health', {
+            const baseUrl = window.API_CONFIG ? window.API_CONFIG.API_BASE_URL : 'https://seo-guide-creator-api.vercel.app';
+            const response = await fetch(`${baseUrl}/health`, {
                 method: 'GET',
                 mode: 'cors'
             });

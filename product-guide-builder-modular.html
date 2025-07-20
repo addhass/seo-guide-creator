@@ -60,17 +60,31 @@
                         <span id="proxyStatusText">Proxy: Checking...</span>
                     </div>
                     <span style="color: var(--secondary-color); font-weight: 500;">v2.0</span>
-                    <button id="loginBtn" class="login-btn" style="
-                        background: var(--primary-color);
-                        color: white;
-                        border: none;
-                        padding: 0.5rem 1rem;
-                        border-radius: var(--radius-md);
-                        cursor: pointer;
-                        font-size: 0.875rem;
-                        font-weight: 500;
-                        transition: all 0.2s;
-                    ">Login</button>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button id="loginBtn" class="login-btn" style="
+                            background: var(--primary-color);
+                            color: white;
+                            border: none;
+                            padding: 0.5rem 1rem;
+                            border-radius: var(--radius-md);
+                            cursor: pointer;
+                            font-size: 0.875rem;
+                            font-weight: 500;
+                            transition: all 0.2s;
+                        ">Login</button>
+                        <button id="logoutBtn" class="logout-btn" style="
+                            background: #EF4444;
+                            color: white;
+                            border: none;
+                            padding: 0.5rem 1rem;
+                            border-radius: var(--radius-md);
+                            cursor: pointer;
+                            font-size: 0.875rem;
+                            font-weight: 500;
+                            transition: all 0.2s;
+                            display: none;
+                        ">Logout</button>
+                    </div>
                 </div>
             </div>
         </header>
@@ -469,14 +483,14 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <!-- Load JavaScript Modules -->
-    <script src="js/config.js"></script>
-    <script src="js/supabase-client.js"></script>
-    <script src="js/auth-helper.js"></script>
-    <script src="js/form-handler.js"></script>
-    <script src="js/competitor-analysis.js"></script>
-    <script src="js/product-analyzer.js"></script>
-    <script src="js/guide-generation.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/config.js?v=2.1"></script>
+    <script src="js/supabase-client.js?v=2.1"></script>
+    <script src="js/auth-helper.js?v=2.1"></script>
+    <script src="js/form-handler.js?v=2.1"></script>
+    <script src="js/competitor-analysis.js?v=2.1"></script>
+    <script src="js/product-analyzer.js?v=2.1"></script>
+    <script src="js/guide-generation.js?v=2.1"></script>
+    <script src="js/app.js?v=2.1"></script>
     
     <!-- Cache Busting Script -->
     <script>
