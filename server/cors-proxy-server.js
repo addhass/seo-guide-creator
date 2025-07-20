@@ -492,8 +492,12 @@ app.post('/analyze-keywords-tsv', async (req, res) => {
             return normalized === 'keyword' || normalized === 'primary keyword';
         });
         const searchVolumeIndex = header.findIndex(col => {
-            const normalized = col.toLowerCase();
-            return normalized.includes('search volume') || normalized.includes('msv');
+            const normalized = col.toLowerCase().trim();
+            // More flexible matching for search volume variations
+            return (normalized.includes('search') && normalized.includes('volume')) ||
+                   normalized.includes('msv') ||
+                   normalized === 'search volume' ||
+                   normalized === 'monthly search volume';
         });
         
         if (keywordIndex === -1 || searchVolumeIndex === -1) {
@@ -501,13 +505,27 @@ app.post('/analyze-keywords-tsv', async (req, res) => {
             console.error('   Available columns:', header);
             console.error('   Keyword index:', keywordIndex);
             console.error('   Search volume index:', searchVolumeIndex);
+            
+            // Log detailed column analysis for debugging
+            console.log('   Column analysis:');
+            header.forEach((col, idx) => {
+                const normalized = col.toLowerCase().trim();
+                console.log(`   [${idx}] "${col}" -> normalized: "${normalized}"`);
+                if (normalized === 'keyword' || normalized === 'primary keyword') {
+                    console.log('      ^ This should match as keyword column');
+                }
+                if ((normalized.includes('search') && normalized.includes('volume')) || normalized.includes('msv')) {
+                    console.log('      ^ This should match as search volume column');
+                }
+            });
+            
             return res.status(400).json({ 
                 error: 'Could not find required columns (Keyword, Search Volume)',
                 foundColumns: header,
                 details: {
                     keywordColumnFound: keywordIndex !== -1,
                     searchVolumeColumnFound: searchVolumeIndex !== -1,
-                    hint: 'Ensure TSV has "Keyword" and "Search Volume" columns'
+                    hint: 'Ensure TSV has "Keyword" and "Search Volume" (or "MSV") columns'
                 }
             });
         }
