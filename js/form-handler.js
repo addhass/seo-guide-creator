@@ -370,7 +370,7 @@ class FormHandler {
         
         try {
             // Fetch page content via proxy
-            const response = await fetch(`${this.baseUrl}/fetch-page?url=${encodeURIComponent(aboutUrl)}`);
+            const response = await window.authHelper.authenticatedFetch(`${this.baseUrl}/fetch-page?url=${encodeURIComponent(aboutUrl)}`);
             
             if (!response.ok) {
                 throw new Error('Failed to fetch About Us page');
@@ -383,7 +383,7 @@ class FormHandler {
             }
             
             // Generate analysis via Claude
-            const analysisResponse = await fetch(`${this.baseUrl}/claude-api`, {
+            const analysisResponse = await window.authHelper.authenticatedFetch(`${this.baseUrl}/claude-api`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -471,7 +471,7 @@ BRAND VOICE: [comma-separated characteristics]`
         testBtn.disabled = true;
         
         try {
-            const response = await fetch(`${this.baseUrl}/health`);
+            const response = await window.authHelper.authenticatedFetch(`${this.baseUrl}/health`);
             
             if (response.ok) {
                 alert('✅ Proxy server is working correctly!');

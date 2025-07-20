@@ -50,7 +50,7 @@ class CompetitorAnalysis {
             }
             
             // Step 2: Send TSV data to proxy server for analysis
-            const keywordAnalysisResponse = await fetch(`${this.baseUrl}/analyze-keywords-tsv`, {
+            const keywordAnalysisResponse = await window.authHelper.authenticatedFetch(`${this.baseUrl}/analyze-keywords-tsv`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -73,7 +73,7 @@ class CompetitorAnalysis {
             const top10Keywords = keywordData.top30Keywords.slice(0, 10);
             console.log(`🔍 Fetching SERP data for top ${top10Keywords.length} keywords...`);
             
-            const serpResponse = await fetch(`${this.baseUrl}/get-serp-competitors-sequential`, {
+            const serpResponse = await window.authHelper.authenticatedFetch(`${this.baseUrl}/get-serp-competitors-sequential`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -343,7 +343,7 @@ class CompetitorAnalysis {
             try {
                 console.log(`🔍 Analyzing: ${competitorUrl}`);
                 
-                const response = await fetch(`${this.baseUrl}/analyze-competitor-website`, {
+                const response = await window.authHelper.authenticatedFetch(`${this.baseUrl}/analyze-competitor-website`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -542,7 +542,7 @@ class CompetitorAnalysis {
         btn.innerHTML = '<span class="spinner"></span> Fetching competitor data...';
         
         try {
-            const response = await fetch(`${this.baseUrl}/get-serp-competitors-sequential`, {
+            const response = await window.authHelper.authenticatedFetch(`${this.baseUrl}/get-serp-competitors-sequential`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

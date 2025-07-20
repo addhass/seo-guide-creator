@@ -5,8 +5,13 @@ const express = require('express');
 const cors = require('cors');
 const fetch = require('node-fetch');
 const { JSDOM } = require('jsdom');
+require('dotenv').config();
+
+// Import Supabase service
+const { authenticateRequest } = require('./supabase-service');
+
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 // Rate limiting for ethical crawling
 const rateLimiter = new Map();
@@ -46,6 +51,9 @@ function checkRateLimit(domain) {
 app.use(cors());
 // Increase body size limit to handle large HTML payloads
 app.use(express.json({ limit: '10mb' }));
+
+// Add authentication middleware
+app.use(authenticateRequest);
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Proxy endpoint for fetching About Us pages
@@ -229,13 +237,28 @@ app.post('/claude-api', async (req, res) => {
             return res.status(400).json({ error: 'Messages parameter is required' });
         }
 
+        // Get API key from user's stored keys or environment
+        let apiKey;
+        
+        if (req.apiKeys && req.apiKeys.anthropic) {
+            // Use user's stored API key
+            apiKey = req.apiKeys.anthropic;
+        } else {
+            // Fallback to environment variable
+            apiKey = process.env.ANTHROPIC_API_KEY || '';
+        }
+        
+        if (!apiKey) {
+            return res.status(401).json({ error: 'Anthropic API key not configured. Please add your API key in the dashboard.' });
+        }
+
         console.log('Proxying Claude API request...');
         
         const claudeResponse = await fetch('https://api.anthropic.com/v1/messages', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'x-api-key': process.env.ANTHROPIC_API_KEY || '',
+                'x-api-key': apiKey,
                 'anthropic-version': '2023-06-01'
             },
             body: JSON.stringify({
@@ -287,8 +310,23 @@ app.post('/dataforseo-keyword-competitors', async (req, res) => {
         
         // DataForSEO credentials
         // Use environment variables for security
-        const login = process.env.DATAFORSEO_LOGIN || 'addam@addhass.com';
-        const password = process.env.DATAFORSEO_PASSWORD || 'ef8054827b95e848';
+        // Get credentials from user's stored API keys or environment
+        let login, password;
+        
+        if (req.apiKeys && req.apiKeys.dataforseo) {
+            // Use user's stored credentials
+            const parts = req.apiKeys.dataforseo.split(':');
+            login = parts[0];
+            password = parts[1];
+        } else {
+            // Fallback to environment variables
+            login = process.env.DATAFORSEO_LOGIN;
+            password = process.env.DATAFORSEO_PASSWORD;
+        }
+        
+        if (!login || !password) {
+            return res.status(401).json({ error: 'DataForSEO credentials not configured. Please add your API keys in the dashboard.' });
+        }
         
         // Simple UK/English defaults for now
         const locationCode = 2826; // United Kingdom
@@ -1088,7 +1126,7 @@ Be specific and actionable in your analysis. Focus on insights that would help w
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'x-api-key': process.env.ANTHROPIC_API_KEY || '',
+                'x-api-key': apiKey,
                 'anthropic-version': '2023-06-01'
             },
             body: JSON.stringify({
@@ -1164,8 +1202,23 @@ app.post('/dataforseo-serp', async (req, res) => {
         }
 
         // Use environment variables for security
-        const login = process.env.DATAFORSEO_LOGIN || 'addam@addhass.com';
-        const password = process.env.DATAFORSEO_PASSWORD || 'ef8054827b95e848';
+        // Get credentials from user's stored API keys or environment
+        let login, password;
+        
+        if (req.apiKeys && req.apiKeys.dataforseo) {
+            // Use user's stored credentials
+            const parts = req.apiKeys.dataforseo.split(':');
+            login = parts[0];
+            password = parts[1];
+        } else {
+            // Fallback to environment variables
+            login = process.env.DATAFORSEO_LOGIN;
+            password = process.env.DATAFORSEO_PASSWORD;
+        }
+        
+        if (!login || !password) {
+            return res.status(401).json({ error: 'DataForSEO credentials not configured. Please add your API keys in the dashboard.' });
+        }
         
         const dataForSeoResponse = await fetch('https://api.dataforseo.com/v3/serp/google/organic/live/advanced', {
             method: 'POST',

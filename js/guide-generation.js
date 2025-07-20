@@ -40,7 +40,7 @@ class GuideGeneration {
             const prompt = this.buildGuidePrompt(formData);
             
             // Call Claude API via proxy
-            const response = await fetch(`${this.baseUrl}/claude-api`, {
+            const response = await window.authHelper.authenticatedFetch(`${this.baseUrl}/claude-api`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
