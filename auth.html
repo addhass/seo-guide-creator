@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - SEO Guide Creator</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .auth-container {
+            max-width: 400px;
+            margin: 4rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .auth-form {
+            margin-top: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 91, 73, 0.1);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .auth-buttons button {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+        
+        .btn-secondary {
+            background: var(--light-bg);
+            color: var(--text-color);
+        }
+        
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+        
+        .auth-message {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+        }
+        
+        .auth-message.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+        
+        .auth-message.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+        
+        .auth-links {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.875rem;
+        }
+        
+        .auth-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .auth-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <h1 style="text-align: center; color: var(--primary-color); margin-bottom: 0.5rem;">
+            SEO Guide Creator
+        </h1>
+        <p style="text-align: center; color: var(--muted-text); margin-bottom: 2rem;">
+            Sign in to access your account
+        </p>
+        
+        <form id="authForm" class="auth-form">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="you@example.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="••••••••">
+            </div>
+            
+            <div class="auth-buttons">
+                <button type="submit" class="btn-primary" data-action="signin">
+                    Sign In
+                </button>
+                <button type="button" class="btn-secondary" data-action="signup">
+                    Sign Up
+                </button>
+            </div>
+        </form>
+        
+        <div id="authMessage" class="auth-message" style="display: none;"></div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Processing...</p>
+        </div>
+        
+        <div class="auth-links">
+            <a href="#" id="forgotPassword">Forgot your password?</a>
+        </div>
+    </div>
+    
+    <!-- Supabase from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Configuration -->
+    <script src="js/config.js"></script>
+    
+    <!-- Supabase Client -->
+    <script src="js/supabase-client.js"></script>
+    
+    <!-- Auth Handler -->
+    <script>
+        // Initialize Supabase
+        let authReady = false;
+        
+        async function initAuth() {
+            await window.supabaseClient.init();
+            authReady = true;
+            
+            // Check if user is already logged in
+            const user = await window.supabaseClient.auth.getUser();
+            if (user) {
+                // Redirect to dashboard
+                window.location.href = '/dashboard.html';
+            }
+        }
+        
+        // Form handling
+        const form = document.getElementById('authForm');
+        const messageDiv = document.getElementById('authMessage');
+        const loadingDiv = document.getElementById('loading');
+        
+        async function showMessage(message, type = 'error') {
+            messageDiv.textContent = message;
+            messageDiv.className = `auth-message ${type}`;
+            messageDiv.style.display = 'block';
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 3000);
+            }
+        }
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!authReady) {
+                showMessage('Auth system not ready. Please wait...');
+                return;
+            }
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const action = e.submitter.dataset.action;
+            
+            // Show loading
+            loadingDiv.style.display = 'block';
+            messageDiv.style.display = 'none';
+            
+            try {
+                let result;
+                
+                if (action === 'signin') {
+                    result = await window.supabaseClient.auth.signIn(email, password);
+                } else if (action === 'signup') {
+                    result = await window.supabaseClient.auth.signUp(email, password);
+                }
+                
+                loadingDiv.style.display = 'none';
+                
+                if (result.error) {
+                    showMessage(result.error.message);
+                } else {
+                    if (action === 'signup') {
+                        showMessage('Sign up successful! Please check your email to verify your account.', 'success');
+                    } else {
+                        showMessage('Sign in successful! Redirecting...', 'success');
+                        setTimeout(() => {
+                            window.location.href = '/dashboard.html';
+                        }, 1000);
+                    }
+                }
+            } catch (error) {
+                loadingDiv.style.display = 'none';
+                showMessage(error.message);
+            }
+        });
+        
+        // Sign up button
+        document.querySelector('[data-action="signup"]').addEventListener('click', (e) => {
+            e.preventDefault();
+            form.requestSubmit(e.target);
+        });
+        
+        // Forgot password
+        document.getElementById('forgotPassword').addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            if (!email) {
+                showMessage('Please enter your email first');
+                return;
+            }
+            
+            loadingDiv.style.display = 'block';
+            
+            const result = await window.supabaseClient.auth.resetPassword(email);
+            
+            loadingDiv.style.display = 'none';
+            
+            if (result.error) {
+                showMessage(result.error.message);
+            } else {
+                showMessage('Password reset email sent! Please check your inbox.', 'success');
+            }
+        });
+        
+        // Initialize on load
+        initAuth();
+    </script>
+</body>
+</html>

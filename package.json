@@ -1,0 +1,27 @@
+{
+  "name": "product-description-guide",
+  "version": "1.0.0",
+  "description": "An AI-powered tool for generating customized SEO product description guides with automated competitor analysis.",
+  "main": "test-analyzer.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/addhass/seo-guide-creator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/addhass/seo-guide-creator/issues"
+  },
+  "homepage": "https://github.com/addhass/seo-guide-creator#readme",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.52.0"
+  }
+}

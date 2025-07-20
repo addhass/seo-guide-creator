@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SEO Guide Creator</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .dashboard-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .api-keys-section {
+            margin-top: 2rem;
+        }
+        
+        .api-key-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .api-key-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .api-key-service {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        
+        .api-key-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .api-key-status.active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .api-key-status.inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .api-key-input-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .api-key-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: monospace;
+            font-size: 0.875rem;
+        }
+        
+        .api-key-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .btn-test {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        
+        .btn-test:hover {
+            background: #d1d5db;
+        }
+        
+        .btn-save {
+            background: var(--success-color);
+            color: white;
+        }
+        
+        .btn-save:hover {
+            background: #00b896;
+        }
+        
+        .btn-delete {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .btn-delete:hover {
+            background: #fecaca;
+        }
+        
+        .help-text {
+            font-size: 0.875rem;
+            color: var(--muted-text);
+            margin-top: 0.5rem;
+        }
+        
+        .help-text a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        
+        .help-text a:hover {
+            text-decoration: underline;
+        }
+        
+        .cta-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .cta-section h2 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-section .btn {
+            background: white;
+            color: #667eea;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+        }
+        
+        .cta-section .btn:hover {
+            background: #f9fafb;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <h1>My Dashboard</h1>
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">?</div>
+                <div>
+                    <div id="userEmail" style="font-weight: 500;">Loading...</div>
+                    <a href="#" id="signOut" style="font-size: 0.875rem; color: var(--muted-text);">Sign Out</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- API Keys Section -->
+        <div class="api-keys-section">
+            <h2>API Keys</h2>
+            <p style="color: var(--muted-text); margin-bottom: 2rem;">
+                Add your API keys below to use the SEO Guide Creator. Your keys are encrypted and stored securely.
+            </p>
+            
+            <!-- DataForSEO Key -->
+            <div class="api-key-card">
+                <div class="api-key-header">
+                    <div>
+                        <div class="api-key-service">DataForSEO</div>
+                        <div class="help-text">
+                            For competitor discovery and SERP analysis. 
+                            <a href="https://dataforseo.com/" target="_blank">Get your API key →</a>
+                        </div>
+                    </div>
+                    <div class="api-key-status inactive" id="dataforseo-status">
+                        <span class="status-dot">●</span>
+                        <span>Not configured</span>
+                    </div>
+                </div>
+                
+                <div class="api-key-input-group">
+                    <input type="password" 
+                           class="api-key-input" 
+                           id="dataforseo-username" 
+                           placeholder="DataForSEO Username (email)">
+                    <input type="password" 
+                           class="api-key-input" 
+                           id="dataforseo-password" 
+                           placeholder="DataForSEO Password">
+                </div>
+                
+                <div class="api-key-actions">
+                    <button class="btn-sm btn-test" onclick="testApiKey('dataforseo')">Test Connection</button>
+                    <button class="btn-sm btn-save" onclick="saveApiKey('dataforseo')">Save</button>
+                    <button class="btn-sm btn-delete" onclick="deleteApiKey('dataforseo')">Delete</button>
+                </div>
+            </div>
+            
+            <!-- Anthropic Key -->
+            <div class="api-key-card">
+                <div class="api-key-header">
+                    <div>
+                        <div class="api-key-service">Anthropic (Claude)</div>
+                        <div class="help-text">
+                            For AI-powered guide generation. 
+                            <a href="https://console.anthropic.com/" target="_blank">Get your API key →</a>
+                        </div>
+                    </div>
+                    <div class="api-key-status inactive" id="anthropic-status">
+                        <span class="status-dot">●</span>
+                        <span>Not configured</span>
+                    </div>
+                </div>
+                
+                <div class="api-key-input-group">
+                    <input type="password" 
+                           class="api-key-input" 
+                           id="anthropic-key" 
+                           placeholder="sk-ant-api03-...">
+                </div>
+                
+                <div class="api-key-actions">
+                    <button class="btn-sm btn-test" onclick="testApiKey('anthropic')">Test Connection</button>
+                    <button class="btn-sm btn-save" onclick="saveApiKey('anthropic')">Save</button>
+                    <button class="btn-sm btn-delete" onclick="deleteApiKey('anthropic')">Delete</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h2>Ready to Generate SEO Guides?</h2>
+            <p style="margin-bottom: 1.5rem;">
+                Your API keys are configured. Start analyzing competitors and creating content guides!
+            </p>
+            <a href="/product-guide-builder-modular.html" class="btn">
+                Launch SEO Guide Creator →
+            </a>
+        </div>
+    </div>
+    
+    <!-- Supabase from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Configuration -->
+    <script src="js/config.js"></script>
+    
+    <!-- Supabase Client -->
+    <script src="js/supabase-client.js"></script>
+    
+    <!-- Dashboard Handler -->
+    <script>
+        let currentUser = null;
+        
+        // Initialize
+        async function init() {
+            await window.supabaseClient.init();
+            
+            // Check authentication
+            currentUser = await window.supabaseClient.auth.getUser();
+            if (!currentUser) {
+                window.location.href = '/auth.html';
+                return;
+            }
+            
+            // Display user info
+            document.getElementById('userEmail').textContent = currentUser.email;
+            document.getElementById('userAvatar').textContent = currentUser.email[0].toUpperCase();
+            
+            // Load existing API keys
+            await loadApiKeys();
+        }
+        
+        // Load and display API key status
+        async function loadApiKeys() {
+            const keys = await window.supabaseClient.apiKeys.getAll();
+            
+            if (keys.data) {
+                keys.data.forEach(key => {
+                    updateKeyStatus(key.service, true, key.key_hint);
+                });
+            }
+        }
+        
+        // Update key status display
+        function updateKeyStatus(service, configured, hint = '') {
+            const statusEl = document.getElementById(`${service}-status`);
+            if (configured) {
+                statusEl.className = 'api-key-status active';
+                statusEl.innerHTML = `
+                    <span class="status-dot">●</span>
+                    <span>Active${hint ? ` (•••${hint})` : ''}</span>
+                `;
+            } else {
+                statusEl.className = 'api-key-status inactive';
+                statusEl.innerHTML = `
+                    <span class="status-dot">●</span>
+                    <span>Not configured</span>
+                `;
+            }
+        }
+        
+        // Save API key
+        async function saveApiKey(service) {
+            let apiKey;
+            
+            if (service === 'dataforseo') {
+                const username = document.getElementById('dataforseo-username').value;
+                const password = document.getElementById('dataforseo-password').value;
+                
+                if (!username || !password) {
+                    alert('Please enter both username and password for DataForSEO');
+                    return;
+                }
+                
+                // Store as combined credential
+                apiKey = `${username}:${password}`;
+            } else {
+                apiKey = document.getElementById(`${service}-key`).value;
+                
+                if (!apiKey) {
+                    alert('Please enter an API key');
+                    return;
+                }
+            }
+            
+            const result = await window.supabaseClient.apiKeys.save(service, apiKey);
+            
+            if (result.error) {
+                alert(`Error saving key: ${result.error.message}`);
+            } else {
+                alert('API key saved successfully!');
+                
+                // Clear input fields
+                if (service === 'dataforseo') {
+                    document.getElementById('dataforseo-username').value = '';
+                    document.getElementById('dataforseo-password').value = '';
+                } else {
+                    document.getElementById(`${service}-key`).value = '';
+                }
+                
+                // Reload status
+                await loadApiKeys();
+            }
+        }
+        
+        // Test API key
+        async function testApiKey(service) {
+            const statusEl = document.getElementById(`${service}-status`);
+            statusEl.innerHTML = '<span class="spinner"></span> Testing...';
+            
+            const result = await window.supabaseClient.apiKeys.test(service);
+            
+            if (result.success) {
+                alert('API key is valid and working!');
+                updateKeyStatus(service, true);
+            } else {
+                alert(`API key test failed: ${result.error || 'Invalid key'}`);
+                updateKeyStatus(service, false);
+            }
+        }
+        
+        // Delete API key
+        async function deleteApiKey(service) {
+            if (!confirm(`Are you sure you want to delete your ${service} API key?`)) {
+                return;
+            }
+            
+            const result = await window.supabaseClient.apiKeys.delete(service);
+            
+            if (result.error) {
+                alert(`Error deleting key: ${result.error.message}`);
+            } else {
+                alert('API key deleted successfully');
+                updateKeyStatus(service, false);
+            }
+        }
+        
+        // Sign out
+        document.getElementById('signOut').addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            await window.supabaseClient.auth.signOut();
+            window.location.href = '/auth.html';
+        });
+        
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
