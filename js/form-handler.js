@@ -373,10 +373,13 @@ class FormHandler {
             const response = await window.authHelper.authenticatedFetch(`${this.baseUrl}/fetch-page?url=${encodeURIComponent(aboutUrl)}`);
             
             if (!response.ok) {
-                throw new Error('Failed to fetch About Us page');
+                const errorText = await response.text();
+                console.error('Fetch page error:', errorText);
+                throw new Error(`Failed to fetch About Us page: ${response.status}`);
             }
             
             const data = await response.json();
+            console.log('Fetched page data:', data);
             
             if (!data.success) {
                 throw new Error(data.error || 'Failed to analyze About Us page');
@@ -411,7 +414,9 @@ BRAND VOICE: [comma-separated characteristics]`
             });
             
             if (!analysisResponse.ok) {
-                throw new Error('Failed to analyze brand information');
+                const errorText = await analysisResponse.text();
+                console.error('Claude API error response:', errorText);
+                throw new Error(`Failed to analyze brand information: ${analysisResponse.status} - ${errorText}`);
             }
             
             const analysisData = await analysisResponse.json();
