@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "cors-proxy-server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "cors-proxy-server.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}

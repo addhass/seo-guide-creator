@@ -3,7 +3,7 @@
 
 class CompetitorAnalysis {
     constructor() {
-        this.baseUrl = 'http://localhost:3001';
+        this.baseUrl = window.API_CONFIG ? window.API_CONFIG.API_BASE_URL : 'http://localhost:3001';
     }
 
     // Main competitor discovery function

@@ -1282,9 +1282,12 @@ app.get('/health', (req, res) => {
     res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
-app.listen(PORT, () => {
-    console.log(`🚀 CORS Proxy Server running on http://localhost:${PORT}`);
-    console.log(`📋 Test endpoint: http://localhost:${PORT}/fetch-page?url=https://example.com/about`);
-});
-
-module.exports = app;
+// For Vercel deployment
+if (process.env.VERCEL) {
+    module.exports = app;
+} else {
+    app.listen(PORT, () => {
+        console.log(`🚀 CORS Proxy Server running on http://localhost:${PORT}`);
+        console.log(`📋 Test endpoint: http://localhost:${PORT}/fetch-page?url=https://example.com/about`);
+    });
+}
