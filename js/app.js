@@ -99,6 +99,11 @@ class ProductGuideApp {
                     };
                 }
                 
+                // Check if this is the admin user
+                if (user.email === 'addam@addhass.com') {
+                    this.showAdminBar();
+                }
+                
                 // Check API keys status
                 await this.checkApiKeysStatus();
                 
@@ -226,6 +231,68 @@ class ProductGuideApp {
             }
             
             textEl.textContent = text;
+        }
+    }
+    
+    // Show admin bar for specific user
+    showAdminBar() {
+        console.log('🔧 Showing admin bar for admin user');
+        
+        // Create admin bar if it doesn't exist
+        let adminBar = document.getElementById('adminBar');
+        if (!adminBar) {
+            adminBar = document.createElement('div');
+            adminBar.id = 'adminBar';
+            adminBar.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 35px;
+                background: #FFA500;
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 1rem;
+                z-index: 10000;
+                font-size: 14px;
+                font-weight: 500;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            `;
+            
+            adminBar.innerHTML = `
+                <span>🔧 Admin Mode</span>
+                <button id="adminPrefillBtn" style="
+                    background: white;
+                    color: #FFA500;
+                    border: none;
+                    padding: 0.25rem 0.75rem;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 13px;
+                    font-weight: 500;
+                ">Prefill Wild Donkey Data</button>
+                <button id="adminLoadKeywordsBtn" style="
+                    background: white;
+                    color: #FFA500;
+                    border: none;
+                    padding: 0.25rem 0.75rem;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 13px;
+                    font-weight: 500;
+                ">Load Sample Keywords</button>
+            `;
+            
+            document.body.insertBefore(adminBar, document.body.firstChild);
+            
+            // Adjust body padding to make room for admin bar
+            document.body.style.paddingTop = '35px';
+            
+            // Setup button handlers
+            document.getElementById('adminPrefillBtn').onclick = () => this.autoFillWildDonkeyData();
+            document.getElementById('adminLoadKeywordsBtn').onclick = () => this.loadSampleKeywordData();
         }
     }
 
@@ -467,32 +534,8 @@ class ProductGuideApp {
     
     // Setup admin mode functionality
     setupAdminMode() {
-        // Check for admin mode in URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const isAdminMode = urlParams.get('admin') === 'true';
-        
-        if (isAdminMode) {
-            const adminPanel = document.getElementById('adminPanel');
-            if (adminPanel) {
-                adminPanel.style.display = 'block';
-                console.log('🔧 Admin mode activated');
-                
-                // Auto-load sample keyword data for demo
-                this.loadSampleKeywordData();
-            }
-            
-            // Show admin test link
-            const adminLink = document.getElementById('adminTestLink');
-            if (adminLink) {
-                adminLink.style.display = 'block';
-            }
-            
-            // Setup auto-fill button
-            const autoFillBtn = document.getElementById('autoFillBtn');
-            if (autoFillBtn) {
-                autoFillBtn.addEventListener('click', () => this.autoFillWildDonkeyData());
-            }
-        }
+        // No longer needed - admin mode is now based on user email
+        // Keeping empty method for backward compatibility
     }
     
     // Load keyword data for demo
