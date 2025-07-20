@@ -88,6 +88,7 @@ async function authenticateRequest(req, res, next) {
     try {
         // Get authorization header
         const authHeader = req.headers.authorization;
+        console.log('Auth header received:', authHeader ? 'Yes' : 'No');
         
         // For test endpoint, skip authentication
         if (req.path === '/test-api-key') {
@@ -96,9 +97,11 @@ async function authenticateRequest(req, res, next) {
         
         // Verify user
         const user = await verifyUser(authHeader);
+        console.log('User verified:', user?.email);
         
         // Fetch user's API keys
         const apiKeys = await getUserApiKeys(user.id);
+        console.log('API keys fetched:', Object.keys(apiKeys || {}));
         
         // Attach to request
         req.user = user;
@@ -109,6 +112,7 @@ async function authenticateRequest(req, res, next) {
         // For now, allow requests to pass through without auth
         // This maintains backward compatibility
         console.warn('Authentication failed:', error.message);
+        console.log('Auth error details:', error.stack);
         req.apiKeys = {}; // Empty keys object
         next();
     }
