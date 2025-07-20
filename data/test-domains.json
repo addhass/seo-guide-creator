@@ -1,0 +1,251 @@
+{
+  "shopify": {
+    "confirmed": [
+      "colourpop.com",
+      "jeffreestarcosmetics.com",
+      "fashionnova.com",
+      "gymshark.com",
+      "allbirds.com",
+      "kylie-cosmetics.myshopify.com",
+      "bombas.com",
+      "pela.earth",
+      "reddressboutique.com",
+      "cupshe.com",
+      "kith.com",
+      "fangamer.com",
+      "bulletproof.com",
+      "mnml.la",
+      "rebeccaminkoff.com",
+      "wethenew.com",
+      "loopearplugs.com",
+      "kulala.com",
+      "cowboy.com",
+      "uppercase.ca",
+      "silkandwillow.com",
+      "unitedbyblue.com",
+      "manitobah.com",
+      "tofinosoapcompany.com",
+      "lastobject.com",
+      "partakefoods.com",
+      "thebirdspapaya.com",
+      "tattly.com",
+      "modkat.com",
+      "heinztohome.com",
+      "brumate.com",
+      "nativecos.com",
+      "thesill.com",
+      "leesa.com",
+      "mvmtwatches.com",
+      "chubbiesshorts.com",
+      "rothys.com",
+      "kyliecosmetics.com",
+      "skims.com",
+      "glossier.com",
+      "warbyparker.com",
+      "everlane.com",
+      "outdoor-voices.myshopify.com",
+      "awaytravel.com",
+      "casper.com",
+      "allsaints.com",
+      "mejuri.com",
+      "tentree.com",
+      "aritzia.com",
+      "princess-polly-us.myshopify.com",
+      "nobullproject.com",
+      "vincero-collective.myshopify.com",
+      "peakdesign.com",
+      "hydroflask.com",
+      "ruggable.com",
+      "blenderseyewear.com",
+      "theridge.com",
+      "naadam.co",
+      "kotn.com",
+      "taylorstitch.com",
+      "goodamerican.com",
+      "thefrye.com"
+    ],
+    "categories": {
+      "beauty_cosmetics": [
+        "colourpop.com",
+        "jeffreestarcosmetics.com",
+        "kyliecosmetics.com",
+        "glossier.com",
+        "nativecos.com"
+      ],
+      "fashion_apparel": [
+        "fashionnova.com",
+        "gymshark.com",
+        "skims.com",
+        "everlane.com",
+        "goodamerican.com",
+        "reddressboutique.com",
+        "cupshe.com",
+        "kith.com",
+        "mnml.la",
+        "rebeccaminkoff.com",
+        "allsaints.com",
+        "aritzia.com",
+        "princess-polly-us.myshopify.com",
+        "taylorstitch.com",
+        "kotn.com"
+      ],
+      "footwear": [
+        "allbirds.com",
+        "rothys.com",
+        "nobullproject.com"
+      ],
+      "home_lifestyle": [
+        "casper.com",
+        "leesa.com",
+        "ruggable.com",
+        "thesill.com",
+        "modkat.com"
+      ],
+      "accessories": [
+        "mvmtwatches.com",
+        "vincero-collective.myshopify.com",
+        "warbyparker.com",
+        "mejuri.com",
+        "theridge.com",
+        "peakdesign.com",
+        "quadlockcase.com"
+      ],
+      "food_beverage": [
+        "bulletproof.com",
+        "heinztohome.com",
+        "partakefoods.com"
+      ],
+      "outdoor_sports": [
+        "hydroflask.com",
+        "brumate.com",
+        "tentree.com",
+        "unitedbyblue.com"
+      ]
+    }
+  },
+  "woocommerce": {
+    "confirmed": [
+      "nalgene.com",
+      "porter-york.com",
+      "jococups.com",
+      "godinguitars.com",
+      "leggari.com",
+      "phlearn.com",
+      "lensdistortions.com",
+      "suta.in",
+      "aprilsoderstrom.com",
+      "sodashi.com",
+      "yubico.com",
+      "swagtron.com",
+      "rootscience.com",
+      "pickybars.com",
+      "eatgrub.co.uk",
+      "bluestarcoffeeroasters.com",
+      "reddbar.com",
+      "fitgersbrew.com",
+      "beardsandbooch.com",
+      "goshopia.com",
+      "araceligallego.com",
+      "amundsensports.com",
+      "tapsempire.com",
+      "minutemanpress.com",
+      "magna-tiles.com",
+      "shop.wwe.com",
+      "saddlebackleather.com",
+      "beardbrand.com",
+      "clickandgrow.com",
+      "koparibeauty.com",
+      "overclockers.co.uk",
+      "ripndipclothing.com",
+      "frankbody.com",
+      "bhumi.com.au",
+      "bigtreefarms.com",
+      "quadlockcase.com",
+      "vegemite.com.au"
+    ],
+    "categories": {
+      "beauty_wellness": [
+        "sodashi.com",
+        "rootscience.com",
+        "beardbrand.com",
+        "koparibeauty.com",
+        "frankbody.com"
+      ],
+      "food_beverage": [
+        "pickybars.com",
+        "eatgrub.co.uk",
+        "bluestarcoffeeroasters.com",
+        "reddbar.com",
+        "fitgersbrew.com",
+        "beardsandbooch.com",
+        "bigtreefarms.com",
+        "vegemite.com.au"
+      ],
+      "outdoor_sports": [
+        "nalgene.com",
+        "amundsensports.com",
+        "shop.wwe.com"
+      ],
+      "fashion_accessories": [
+        "porter-york.com",
+        "suta.in",
+        "araceligallego.com",
+        "ripndipclothing.com",
+        "saddlebackleather.com"
+      ],
+      "home_lifestyle": [
+        "jococups.com",
+        "magna-tiles.com",
+        "clickandgrow.com",
+        "bhumi.com.au"
+      ],
+      "electronics_tech": [
+        "yubico.com",
+        "swagtron.com",
+        "overclockers.co.uk",
+        "quadlockcase.com"
+      ],
+      "education_services": [
+        "phlearn.com",
+        "lensdistortions.com",
+        "leggari.com",
+        "minutemanpress.com"
+      ],
+      "music": [
+        "godinguitars.com",
+        "tapsempire.com"
+      ]
+    }
+  },
+  "testing_config": {
+    "sample_sizes": {
+      "quick": 5,
+      "standard": 10,
+      "comprehensive": 20,
+      "full": 50
+    },
+    "rate_limiting": {
+      "delay_between_requests": 2000,
+      "delay_between_domains": 3000,
+      "max_concurrent": 1
+    },
+    "extraction_config": {
+      "max_products_per_domain": 3,
+      "timeout": 30000,
+      "retry_attempts": 2
+    }
+  },
+  "notes": {
+    "data_source": "User-provided comprehensive list",
+    "last_updated": "2025-07-19",
+    "total_domains": 100,
+    "shopify_count": 63,
+    "woocommerce_count": 37,
+    "myshopify_domains": [
+      "kylie-cosmetics.myshopify.com",
+      "outdoor-voices.myshopify.com",
+      "princess-polly-us.myshopify.com",
+      "vincero-collective.myshopify.com"
+    ]
+  }
+}

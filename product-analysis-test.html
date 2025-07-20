@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Analysis Test Suite</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Test-specific styles */
+        .test-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .test-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .test-header h1 {
+            color: white;
+            margin: 0;
+        }
+
+        .test-controls {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .test-queries {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .query-option {
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .query-option:hover {
+            border-color: var(--primary-color);
+            background: var(--light-bg);
+        }
+
+        .query-option.selected {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .test-button {
+            background: var(--success-color);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: var(--radius-md);
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 2rem auto 0;
+        }
+
+        .test-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .test-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .progress-container {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .progress-container.active {
+            display: block;
+        }
+
+        .progress-step {
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: var(--radius-md);
+            background: var(--light-bg);
+            border-left: 4px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .progress-step.active {
+            background: #fef3c7;
+            border-left-color: #f59e0b;
+        }
+
+        .progress-step.success {
+            background: #d1fae5;
+            border-left-color: var(--success-color);
+        }
+
+        .progress-step.error {
+            background: #fee2e2;
+            border-left-color: #dc2626;
+        }
+
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-title {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .step-time {
+            color: var(--muted-text);
+            font-size: 0.875rem;
+        }
+
+        .step-details {
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.875rem;
+            color: var(--muted-text);
+        }
+
+        .results-container {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            display: none;
+        }
+
+        .results-container.active {
+            display: block;
+        }
+
+        .result-section {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: var(--light-bg);
+            border-radius: var(--radius-md);
+        }
+
+        .result-section h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .serp-results {
+            display: grid;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .serp-item {
+            padding: 0.75rem;
+            background: white;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .serp-item.selected {
+            border-color: var(--primary-color);
+            background: #fef3c7;
+        }
+
+        .product-result {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: white;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .product-result h4 {
+            margin: 0 0 0.5rem 0;
+            color: var(--secondary-color);
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .metric-card {
+            padding: 1rem;
+            background: white;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .metric-label {
+            color: var(--muted-text);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .log-output {
+            background: #1a1b3a;
+            color: #00ff00;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            font-family: monospace;
+            font-size: 0.875rem;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 1rem;
+        }
+
+        .log-line {
+            margin: 0.25rem 0;
+        }
+
+        .log-line.error {
+            color: #ff5555;
+        }
+
+        .log-line.success {
+            color: #50fa7b;
+        }
+
+        .log-line.warning {
+            color: #f1fa8c;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="product-guide-builder-modular.html" class="logo">
+                <div class="logo-icon">P</div>
+                <span>Product Description Guide Builder</span>
+            </a>
+            <div class="api-status" id="apiStatus">
+                <span class="status-dot"></span>
+                <span>Test Mode</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="test-container">
+        <a href="product-guide-builder-modular.html?admin=true" class="back-link">
+            ← Back to Main App
+        </a>
+
+        <div class="test-header">
+            <h1>🧪 Product Analysis Test Suite</h1>
+            <p>Test the complete product analysis workflow with real SERP data</p>
+        </div>
+
+        <!-- Test Controls -->
+        <div class="test-controls">
+            <h2>Configure Test</h2>
+            <p>Select a product category to test or use random selection:</p>
+            
+            <div class="test-queries">
+                <div class="query-option" data-query="buy running shoes online">
+                    👟 Running Shoes
+                </div>
+                <div class="query-option" data-query="organic cotton t-shirts">
+                    👕 Organic T-Shirts
+                </div>
+                <div class="query-option" data-query="mens hair styling wax">
+                    💈 Hair Styling Wax
+                </div>
+                <div class="query-option" data-query="premium yoga mats">
+                    🧘 Yoga Mats
+                </div>
+                <div class="query-option" data-query="wireless noise cancelling headphones">
+                    🎧 Headphones
+                </div>
+                <div class="query-option" data-query="espresso coffee makers">
+                    ☕ Coffee Makers
+                </div>
+                <div class="query-option" data-query="interactive dog toys">
+                    🐕 Dog Toys
+                </div>
+                <div class="query-option" data-query="ceramic plant pots">
+                    🪴 Plant Pots
+                </div>
+                <div class="query-option" data-query="whey protein powder">
+                    💪 Protein Powder
+                </div>
+                <div class="query-option" data-query="polarized sunglasses">
+                    🕶️ Sunglasses
+                </div>
+                <div class="query-option selected" data-query="random">
+                    🎲 Random Selection
+                </div>
+            </div>
+
+            <button class="test-button" id="runTestBtn">
+                <span>🚀</span>
+                <span>Run Test</span>
+            </button>
+        </div>
+
+        <!-- Progress Display -->
+        <div class="progress-container" id="progressContainer">
+            <h2>Test Progress</h2>
+            <div id="progressSteps"></div>
+            <div class="log-output" id="logOutput"></div>
+        </div>
+
+        <!-- Results Display -->
+        <div class="results-container" id="resultsContainer">
+            <h2>Test Results</h2>
+            
+            <div class="metrics-grid" id="metricsGrid">
+                <!-- Metrics will be inserted here -->
+            </div>
+
+            <div id="detailedResults">
+                <!-- Detailed results will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class ProductAnalysisTest {
+            constructor() {
+                this.selectedQuery = 'random';
+                this.proxyUrl = 'http://localhost:3001';
+                this.testStartTime = null;
+                this.logLines = [];
+                this.initializeUI();
+            }
+
+            initializeUI() {
+                // Query selection
+                document.querySelectorAll('.query-option').forEach(option => {
+                    option.addEventListener('click', (e) => {
+                        document.querySelectorAll('.query-option').forEach(o => o.classList.remove('selected'));
+                        e.target.classList.add('selected');
+                        this.selectedQuery = e.target.dataset.query;
+                    });
+                });
+
+                // Run test button
+                document.getElementById('runTestBtn').addEventListener('click', () => {
+                    this.runTest();
+                });
+            }
+
+            async runTest() {
+                // Reset UI
+                this.clearResults();
+                this.testStartTime = Date.now();
+                
+                // Disable button
+                const runBtn = document.getElementById('runTestBtn');
+                runBtn.disabled = true;
+                runBtn.innerHTML = '<span class="spinner"></span> Running Test...';
+
+                // Show progress container
+                document.getElementById('progressContainer').classList.add('active');
+                
+                try {
+                    // Get query
+                    const query = this.getTestQuery();
+                    this.addProgress('start', `Starting test with query: "${query}"`);
+                    this.log(`🚀 Test started at ${new Date().toLocaleTimeString()}`);
+                    this.log(`📋 Query: "${query}"`);
+
+                    // Step 1: Get SERP data
+                    this.addProgress('serp', 'Fetching real SERP data from DataForSEO...');
+                    const serpData = await this.fetchSERPData(query);
+                    
+                    // Step 2: Select domain
+                    this.addProgress('select', 'Selecting suitable e-commerce domain...');
+                    const selectedDomain = this.selectDomain(serpData);
+                    
+                    // Step 3: Analyze products
+                    this.addProgress('analyze', `Analyzing products on ${selectedDomain}...`);
+                    const analysisResult = await this.analyzeProducts(selectedDomain);
+                    
+                    // Step 4: Display results
+                    this.addProgress('complete', 'Test completed successfully!');
+                    this.displayResults({
+                        query,
+                        serpData,
+                        selectedDomain,
+                        analysisResult,
+                        duration: ((Date.now() - this.testStartTime) / 1000).toFixed(1)
+                    });
+
+                } catch (error) {
+                    this.addProgress('error', `Test failed: ${error.message}`);
+                    this.log(`❌ Error: ${error.message}`, 'error');
+                    console.error(error);
+                } finally {
+                    // Re-enable button
+                    runBtn.disabled = false;
+                    runBtn.innerHTML = '<span>🚀</span><span>Run Test</span>';
+                }
+            }
+
+            getTestQuery() {
+                if (this.selectedQuery === 'random') {
+                    const queries = [
+                        'buy running shoes online',
+                        'organic cotton t-shirts',
+                        'mens hair styling wax',
+                        'premium yoga mats',
+                        'wireless noise cancelling headphones',
+                        'espresso coffee makers',
+                        'interactive dog toys',
+                        'ceramic plant pots',
+                        'whey protein powder',
+                        'polarized sunglasses'
+                    ];
+                    return queries[Math.floor(Math.random() * queries.length)];
+                }
+                return this.selectedQuery;
+            }
+
+            async fetchSERPData(query) {
+                this.log(`🔍 Fetching SERP data for: "${query}"`);
+                
+                const payload = [{
+                    keyword: query,
+                    location_code: 2840, // US
+                    language_code: "en",
+                    device: "desktop",
+                    os: "windows",
+                    depth: 20
+                }];
+
+                const response = await fetch(`${this.proxyUrl}/dataforseo-serp`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ payload })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`SERP API failed: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                if (data.success && data.data?.tasks?.[0]?.result?.[0]?.items) {
+                    const items = data.data.tasks[0].result[0].items;
+                    const organicResults = items.filter(item => 
+                        item.type === 'organic' && 
+                        item.domain &&
+                        !item.domain.includes('amazon.com') &&
+                        !item.domain.includes('ebay.com') &&
+                        !item.domain.includes('walmart.com')
+                    );
+                    
+                    this.log(`✅ Found ${organicResults.length} organic results`, 'success');
+                    this.updateProgress('serp', 'success', `Found ${organicResults.length} domains`);
+                    
+                    return organicResults.map(item => ({
+                        domain: item.domain,
+                        url: item.url,
+                        title: item.title,
+                        position: item.rank_absolute
+                    }));
+                }
+                
+                throw new Error('No SERP results found');
+            }
+
+            selectDomain(serpResults) {
+                this.log(`🎯 Selecting domain from ${serpResults.length} results`);
+                
+                // Score domains for e-commerce likelihood
+                const ecommerceKeywords = ['shop', 'store', 'buy', 'products', 'collection'];
+                
+                const scoredDomains = serpResults.map(result => {
+                    let score = 20 - result.position;
+                    
+                    const urlLower = result.url.toLowerCase();
+                    const titleLower = result.title.toLowerCase();
+                    
+                    ecommerceKeywords.forEach(keyword => {
+                        if (urlLower.includes(keyword)) score += 3;
+                        if (titleLower.includes(keyword)) score += 2;
+                    });
+                    
+                    return { ...result, score };
+                });
+
+                scoredDomains.sort((a, b) => b.score - a.score);
+                const selected = scoredDomains[0];
+                
+                this.log(`✅ Selected: ${selected.domain} (position #${selected.position}, score: ${selected.score})`, 'success');
+                this.updateProgress('select', 'success', `Selected ${selected.domain}`);
+                
+                return selected.domain;
+            }
+
+            async analyzeProducts(domain) {
+                this.log(`🔬 Starting product analysis for ${domain}`);
+                
+                // Create a more detailed progress step
+                this.addProgress('platform', `Detecting e-commerce platform for ${domain}...`);
+                this.addProgress('plp', 'Searching for Product Listing Page (PLP)...');
+                this.addProgress('products', 'Extracting product URLs...');
+                this.addProgress('descriptions', 'Analyzing product descriptions...');
+                
+                const response = await fetch(`${this.proxyUrl}/analyze-competitor-products`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ domain })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Analysis API failed: ${response.status}`);
+                }
+
+                const result = await response.json();
+                
+                if (result.success && result.data) {
+                    // Update progress based on what we found
+                    if (result.data.platform) {
+                        this.log(`🏪 Platform detected: ${result.data.platform}`, 'success');
+                        this.updateProgress('platform', 'success', `Detected: ${result.data.platform}`);
+                    }
+                    
+                    if (result.data.plpUrl) {
+                        this.log(`📋 PLP found: ${result.data.plpUrl}`, 'success');
+                        this.updateProgress('plp', 'success', 'PLP found successfully');
+                    } else {
+                        this.updateProgress('plp', 'error', 'No PLP found');
+                    }
+                    
+                    if (result.data.products && result.data.products.length > 0) {
+                        this.log(`📦 Found ${result.data.products.length} products`, 'success');
+                        this.updateProgress('products', 'success', `${result.data.products.length} products found`);
+                        this.updateProgress('descriptions', 'success', 'Descriptions analyzed');
+                    } else {
+                        this.updateProgress('products', 'error', 'No products found');
+                        this.updateProgress('descriptions', 'error', 'No descriptions to analyze');
+                    }
+                    
+                    this.log(`✅ Analysis complete!`, 'success');
+                    this.updateProgress('analyze', 'success', 'Analysis completed');
+                    return result.data;
+                } else {
+                    this.log(`❌ Analysis failed: ${result.data?.error || 'Unknown error'}`, 'error');
+                    this.updateProgress('analyze', 'error', result.data?.error || 'Analysis failed');
+                    
+                    // Update all sub-steps as failed
+                    this.updateProgress('platform', 'error', 'Detection failed');
+                    this.updateProgress('plp', 'error', 'Search failed');
+                    this.updateProgress('products', 'error', 'Extraction failed');
+                    this.updateProgress('descriptions', 'error', 'Analysis failed');
+                    
+                    return result.data;
+                }
+            }
+
+            addProgress(step, message) {
+                const container = document.getElementById('progressSteps');
+                
+                const stepDiv = document.createElement('div');
+                stepDiv.className = 'progress-step active';
+                stepDiv.id = `step-${step}`;
+                stepDiv.innerHTML = `
+                    <div class="step-header">
+                        <div class="step-title">
+                            <span class="spinner"></span>
+                            <span>${message}</span>
+                        </div>
+                        <div class="step-time">${new Date().toLocaleTimeString()}</div>
+                    </div>
+                `;
+                
+                container.appendChild(stepDiv);
+            }
+
+            updateProgress(step, status, details = '') {
+                const stepDiv = document.getElementById(`step-${step}`);
+                if (!stepDiv) return;
+                
+                stepDiv.className = `progress-step ${status}`;
+                const titleDiv = stepDiv.querySelector('.step-title');
+                
+                const icon = status === 'success' ? '✅' : status === 'error' ? '❌' : '⏳';
+                titleDiv.innerHTML = `
+                    <span>${icon}</span>
+                    <span>${titleDiv.textContent.trim()}</span>
+                `;
+                
+                if (details) {
+                    const detailsDiv = document.createElement('div');
+                    detailsDiv.className = 'step-details';
+                    detailsDiv.textContent = details;
+                    stepDiv.appendChild(detailsDiv);
+                }
+            }
+
+            log(message, type = 'info') {
+                const logOutput = document.getElementById('logOutput');
+                const logLine = document.createElement('div');
+                logLine.className = `log-line ${type}`;
+                logLine.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+                logOutput.appendChild(logLine);
+                logOutput.scrollTop = logOutput.scrollHeight;
+            }
+
+            clearResults() {
+                document.getElementById('progressSteps').innerHTML = '';
+                document.getElementById('logOutput').innerHTML = '';
+                document.getElementById('resultsContainer').classList.remove('active');
+                document.getElementById('progressContainer').classList.remove('active');
+            }
+
+            displayResults(data) {
+                const resultsContainer = document.getElementById('resultsContainer');
+                resultsContainer.classList.add('active');
+                
+                // Display metrics
+                const metricsHtml = `
+                    <div class="metric-card">
+                        <div class="metric-value">${data.duration}s</div>
+                        <div class="metric-label">Total Duration</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">${data.serpData.length}</div>
+                        <div class="metric-label">SERP Results</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">${data.analysisResult.products?.length || 0}</div>
+                        <div class="metric-label">Products Analyzed</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">${data.analysisResult.success ? '✅' : '❌'}</div>
+                        <div class="metric-label">Status</div>
+                    </div>
+                `;
+                document.getElementById('metricsGrid').innerHTML = metricsHtml;
+                
+                // Display detailed results
+                let detailedHtml = '';
+                
+                // SERP Results
+                detailedHtml += `
+                    <div class="result-section">
+                        <h3>🔍 SERP Results</h3>
+                        <p>Query: "${data.query}"</p>
+                        <div class="serp-results">
+                            ${data.serpData.slice(0, 10).map(item => `
+                                <div class="serp-item ${item.domain === data.selectedDomain ? 'selected' : ''}">
+                                    <div>
+                                        <strong>#${item.position}</strong> ${item.domain}
+                                        <div style="font-size: 0.875rem; color: var(--muted-text);">${item.title}</div>
+                                    </div>
+                                    ${item.domain === data.selectedDomain ? '<span>✅ Selected</span>' : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                // Analysis Results
+                if (data.analysisResult.success) {
+                    detailedHtml += `
+                        <div class="result-section">
+                            <h3>📊 Analysis Results</h3>
+                            <p><strong>Domain:</strong> ${data.selectedDomain}</p>
+                            <p><strong>PLP:</strong> <a href="${data.analysisResult.plpUrl}" target="_blank">${data.analysisResult.plpUrl}</a></p>
+                            
+                            ${data.analysisResult.products?.map((product, i) => `
+                                <div class="product-result">
+                                    <h4>${i + 1}. ${product.productName || 'Unknown Product'}</h4>
+                                    <p><strong>URL:</strong> <a href="${product.url}" target="_blank">${product.url}</a></p>
+                                    <p><strong>Word Count:</strong> ${product.descriptionWordCount || 'N/A'}</p>
+                                    ${product.mainDescription ? 
+                                        `<p><strong>Preview:</strong> ${product.mainDescription.substring(0, 150)}...</p>` : ''
+                                    }
+                                </div>
+                            `).join('') || '<p>No products found</p>'}
+                        </div>
+                    `;
+                    
+                    // Insights
+                    if (data.analysisResult.analysis) {
+                        const analysis = data.analysisResult.analysis;
+                        detailedHtml += `
+                            <div class="result-section">
+                                <h3>💡 Insights & Recommendations</h3>
+                                ${analysis.METRICS ? `
+                                    <h4>Metrics:</h4>
+                                    <ul>
+                                        <li>Average word count: ${analysis.METRICS.averageWordCount || 'N/A'}</li>
+                                        <li>Structure: ${analysis.METRICS.descriptionStructure || 'N/A'}</li>
+                                    </ul>
+                                ` : ''}
+                                
+                                ${analysis['TONE & STYLE'] ? `
+                                    <h4>Tone & Style:</h4>
+                                    <ul>
+                                        <li>Formality: ${analysis['TONE & STYLE'].formalityLevel || 'N/A'}</li>
+                                        <li>Key words: ${analysis['TONE & STYLE'].keyAdjectives?.join(', ') || 'N/A'}</li>
+                                    </ul>
+                                ` : ''}
+                                
+                                ${analysis.RECOMMENDATIONS ? `
+                                    <h4>Recommendations:</h4>
+                                    <ul>
+                                        ${analysis.RECOMMENDATIONS.keyTakeaways?.map(t => `<li>${t}</li>`).join('') || '<li>No recommendations</li>'}
+                                    </ul>
+                                ` : ''}
+                            </div>
+                        `;
+                    }
+                } else {
+                    detailedHtml += `
+                        <div class="result-section">
+                            <h3>❌ Analysis Failed</h3>
+                            <p><strong>Domain:</strong> ${data.selectedDomain}</p>
+                            <p><strong>Error:</strong> ${data.analysisResult.error || 'Unknown error'}</p>
+                            ${data.analysisResult.plpUrl ? 
+                                `<p><strong>Attempted PLP:</strong> ${data.analysisResult.plpUrl}</p>` : ''
+                            }
+                        </div>
+                    `;
+                }
+                
+                document.getElementById('detailedResults').innerHTML = detailedHtml;
+            }
+        }
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            new ProductAnalysisTest();
+        });
+    </script>
+</body>
+</html>

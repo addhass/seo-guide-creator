@@ -1,0 +1,22 @@
+{
+  "name": "product-guide-cors-proxy",
+  "version": "1.0.0",
+  "description": "CORS proxy server for Product Description Guide Builder",
+  "main": "cors-proxy-server.js",
+  "scripts": {
+    "start": "node cors-proxy-server.js",
+    "dev": "nodemon cors-proxy-server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "node-fetch": "^2.6.7",
+    "jsdom": "^22.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": ["cors", "proxy", "scraping"],
+  "author": "Your Name",
+  "license": "MIT"
+}

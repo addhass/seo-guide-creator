@@ -1,0 +1,1084 @@
+{
+  "metadata": {
+    "updated": "2025-07-18T06:28:58.823Z",
+    "total_locations": 94,
+    "total_languages": 46,
+    "source": "DataForSEO Labs API v3"
+  },
+  "popular_locations": {
+    "2036": {
+      "code": 2036,
+      "name": "Australia",
+      "country_iso_code": "AU",
+      "languages": [
+        "en"
+      ]
+    },
+    "2124": {
+      "code": 2124,
+      "name": "Canada",
+      "country_iso_code": "CA",
+      "languages": [
+        "en",
+        "fr"
+      ]
+    },
+    "2250": {
+      "code": 2250,
+      "name": "France",
+      "country_iso_code": "FR",
+      "languages": [
+        "fr"
+      ]
+    },
+    "2276": {
+      "code": 2276,
+      "name": "Germany",
+      "country_iso_code": "DE",
+      "languages": [
+        "de"
+      ]
+    },
+    "2380": {
+      "code": 2380,
+      "name": "Italy",
+      "country_iso_code": "IT",
+      "languages": [
+        "it"
+      ]
+    },
+    "2528": {
+      "code": 2528,
+      "name": "Netherlands",
+      "country_iso_code": "NL",
+      "languages": [
+        "nl"
+      ]
+    },
+    "2724": {
+      "code": 2724,
+      "name": "Spain",
+      "country_iso_code": "ES",
+      "languages": [
+        "es"
+      ]
+    },
+    "2752": {
+      "code": 2752,
+      "name": "Sweden",
+      "country_iso_code": "SE",
+      "languages": [
+        "sv"
+      ]
+    },
+    "2826": {
+      "code": 2826,
+      "name": "United Kingdom",
+      "country_iso_code": "GB",
+      "languages": [
+        "en"
+      ]
+    },
+    "2840": {
+      "code": 2840,
+      "name": "United States",
+      "country_iso_code": "US",
+      "languages": [
+        "en",
+        "es"
+      ]
+    }
+  },
+  "popular_languages": {
+    "en": {
+      "code": "en",
+      "name": "English"
+    },
+    "de": {
+      "code": "de",
+      "name": "German"
+    },
+    "fr": {
+      "code": "fr",
+      "name": "French"
+    },
+    "es": {
+      "code": "es",
+      "name": "Spanish"
+    },
+    "it": {
+      "code": "it",
+      "name": "Italian"
+    },
+    "nl": {
+      "code": "nl",
+      "name": "Dutch"
+    },
+    "sv": {
+      "code": "sv",
+      "name": "Swedish"
+    }
+  },
+  "all_locations": {
+    "2008": {
+      "code": 2008,
+      "name": "Albania",
+      "country_iso_code": "AL",
+      "languages": [
+        "sq"
+      ]
+    },
+    "2012": {
+      "code": 2012,
+      "name": "Algeria",
+      "country_iso_code": "DZ",
+      "languages": [
+        "fr",
+        "ar"
+      ]
+    },
+    "2024": {
+      "code": 2024,
+      "name": "Angola",
+      "country_iso_code": "AO",
+      "languages": [
+        "pt"
+      ]
+    },
+    "2031": {
+      "code": 2031,
+      "name": "Azerbaijan",
+      "country_iso_code": "AZ",
+      "languages": [
+        "az"
+      ]
+    },
+    "2032": {
+      "code": 2032,
+      "name": "Argentina",
+      "country_iso_code": "AR",
+      "languages": [
+        "es"
+      ]
+    },
+    "2036": {
+      "code": 2036,
+      "name": "Australia",
+      "country_iso_code": "AU",
+      "languages": [
+        "en"
+      ]
+    },
+    "2040": {
+      "code": 2040,
+      "name": "Austria",
+      "country_iso_code": "AT",
+      "languages": [
+        "de"
+      ]
+    },
+    "2048": {
+      "code": 2048,
+      "name": "Bahrain",
+      "country_iso_code": "BH",
+      "languages": [
+        "ar"
+      ]
+    },
+    "2050": {
+      "code": 2050,
+      "name": "Bangladesh",
+      "country_iso_code": "BD",
+      "languages": [
+        "bn"
+      ]
+    },
+    "2051": {
+      "code": 2051,
+      "name": "Armenia",
+      "country_iso_code": "AM",
+      "languages": [
+        "hy"
+      ]
+    },
+    "2056": {
+      "code": 2056,
+      "name": "Belgium",
+      "country_iso_code": "BE",
+      "languages": [
+        "fr",
+        "nl",
+        "de"
+      ]
+    },
+    "2068": {
+      "code": 2068,
+      "name": "Bolivia",
+      "country_iso_code": "BO",
+      "languages": [
+        "es"
+      ]
+    },
+    "2070": {
+      "code": 2070,
+      "name": "Bosnia and Herzegovina",
+      "country_iso_code": "BA",
+      "languages": [
+        "bs"
+      ]
+    },
+    "2076": {
+      "code": 2076,
+      "name": "Brazil",
+      "country_iso_code": "BR",
+      "languages": [
+        "pt"
+      ]
+    },
+    "2100": {
+      "code": 2100,
+      "name": "Bulgaria",
+      "country_iso_code": "BG",
+      "languages": [
+        "bg"
+      ]
+    },
+    "2104": {
+      "code": 2104,
+      "name": "Myanmar (Burma)",
+      "country_iso_code": "MM",
+      "languages": [
+        "en"
+      ]
+    },
+    "2116": {
+      "code": 2116,
+      "name": "Cambodia",
+      "country_iso_code": "KH",
+      "languages": [
+        "en"
+      ]
+    },
+    "2120": {
+      "code": 2120,
+      "name": "Cameroon",
+      "country_iso_code": "CM",
+      "languages": [
+        "fr"
+      ]
+    },
+    "2124": {
+      "code": 2124,
+      "name": "Canada",
+      "country_iso_code": "CA",
+      "languages": [
+        "en",
+        "fr"
+      ]
+    },
+    "2144": {
+      "code": 2144,
+      "name": "Sri Lanka",
+      "country_iso_code": "LK",
+      "languages": [
+        "en"
+      ]
+    },
+    "2152": {
+      "code": 2152,
+      "name": "Chile",
+      "country_iso_code": "CL",
+      "languages": [
+        "es"
+      ]
+    },
+    "2158": {
+      "code": 2158,
+      "name": "Taiwan",
+      "country_iso_code": "TW",
+      "languages": [
+        "zh-TW"
+      ]
+    },
+    "2170": {
+      "code": 2170,
+      "name": "Colombia",
+      "country_iso_code": "CO",
+      "languages": [
+        "es"
+      ]
+    },
+    "2188": {
+      "code": 2188,
+      "name": "Costa Rica",
+      "country_iso_code": "CR",
+      "languages": [
+        "es"
+      ]
+    },
+    "2191": {
+      "code": 2191,
+      "name": "Croatia",
+      "country_iso_code": "HR",
+      "languages": [
+        "hr"
+      ]
+    },
+    "2196": {
+      "code": 2196,
+      "name": "Cyprus",
+      "country_iso_code": "CY",
+      "languages": [
+        "el",
+        "en"
+      ]
+    },
+    "2203": {
+      "code": 2203,
+      "name": "Czechia",
+      "country_iso_code": "CZ",
+      "languages": [
+        "cs"
+      ]
+    },
+    "2208": {
+      "code": 2208,
+      "name": "Denmark",
+      "country_iso_code": "DK",
+      "languages": [
+        "da"
+      ]
+    },
+    "2218": {
+      "code": 2218,
+      "name": "Ecuador",
+      "country_iso_code": "EC",
+      "languages": [
+        "es"
+      ]
+    },
+    "2222": {
+      "code": 2222,
+      "name": "El Salvador",
+      "country_iso_code": "SV",
+      "languages": [
+        "es"
+      ]
+    },
+    "2233": {
+      "code": 2233,
+      "name": "Estonia",
+      "country_iso_code": "EE",
+      "languages": [
+        "et"
+      ]
+    },
+    "2246": {
+      "code": 2246,
+      "name": "Finland",
+      "country_iso_code": "FI",
+      "languages": [
+        "fi"
+      ]
+    },
+    "2250": {
+      "code": 2250,
+      "name": "France",
+      "country_iso_code": "FR",
+      "languages": [
+        "fr"
+      ]
+    },
+    "2276": {
+      "code": 2276,
+      "name": "Germany",
+      "country_iso_code": "DE",
+      "languages": [
+        "de"
+      ]
+    },
+    "2288": {
+      "code": 2288,
+      "name": "Ghana",
+      "country_iso_code": "GH",
+      "languages": [
+        "en"
+      ]
+    },
+    "2300": {
+      "code": 2300,
+      "name": "Greece",
+      "country_iso_code": "GR",
+      "languages": [
+        "el",
+        "en"
+      ]
+    },
+    "2320": {
+      "code": 2320,
+      "name": "Guatemala",
+      "country_iso_code": "GT",
+      "languages": [
+        "es"
+      ]
+    },
+    "2344": {
+      "code": 2344,
+      "name": "Hong Kong",
+      "country_iso_code": "HK",
+      "languages": [
+        "en",
+        "zh-TW"
+      ]
+    },
+    "2348": {
+      "code": 2348,
+      "name": "Hungary",
+      "country_iso_code": "HU",
+      "languages": [
+        "hu"
+      ]
+    },
+    "2356": {
+      "code": 2356,
+      "name": "India",
+      "country_iso_code": "IN",
+      "languages": [
+        "en",
+        "hi"
+      ]
+    },
+    "2360": {
+      "code": 2360,
+      "name": "Indonesia",
+      "country_iso_code": "ID",
+      "languages": [
+        "en",
+        "id"
+      ]
+    },
+    "2372": {
+      "code": 2372,
+      "name": "Ireland",
+      "country_iso_code": "IE",
+      "languages": [
+        "en"
+      ]
+    },
+    "2376": {
+      "code": 2376,
+      "name": "Israel",
+      "country_iso_code": "IL",
+      "languages": [
+        "he",
+        "ar"
+      ]
+    },
+    "2380": {
+      "code": 2380,
+      "name": "Italy",
+      "country_iso_code": "IT",
+      "languages": [
+        "it"
+      ]
+    },
+    "2384": {
+      "code": 2384,
+      "name": "Cote d'Ivoire",
+      "country_iso_code": "CI",
+      "languages": [
+        "fr"
+      ]
+    },
+    "2392": {
+      "code": 2392,
+      "name": "Japan",
+      "country_iso_code": "JP",
+      "languages": [
+        "ja"
+      ]
+    },
+    "2398": {
+      "code": 2398,
+      "name": "Kazakhstan",
+      "country_iso_code": "KZ",
+      "languages": [
+        "ru"
+      ]
+    },
+    "2400": {
+      "code": 2400,
+      "name": "Jordan",
+      "country_iso_code": "JO",
+      "languages": [
+        "ar"
+      ]
+    },
+    "2404": {
+      "code": 2404,
+      "name": "Kenya",
+      "country_iso_code": "KE",
+      "languages": [
+        "en"
+      ]
+    },
+    "2410": {
+      "code": 2410,
+      "name": "South Korea",
+      "country_iso_code": "KR",
+      "languages": [
+        "ko"
+      ]
+    },
+    "2428": {
+      "code": 2428,
+      "name": "Latvia",
+      "country_iso_code": "LV",
+      "languages": [
+        "lv"
+      ]
+    },
+    "2440": {
+      "code": 2440,
+      "name": "Lithuania",
+      "country_iso_code": "LT",
+      "languages": [
+        "lt"
+      ]
+    },
+    "2458": {
+      "code": 2458,
+      "name": "Malaysia",
+      "country_iso_code": "MY",
+      "languages": [
+        "en",
+        "ms"
+      ]
+    },
+    "2470": {
+      "code": 2470,
+      "name": "Malta",
+      "country_iso_code": "MT",
+      "languages": [
+        "en"
+      ]
+    },
+    "2484": {
+      "code": 2484,
+      "name": "Mexico",
+      "country_iso_code": "MX",
+      "languages": [
+        "es"
+      ]
+    },
+    "2492": {
+      "code": 2492,
+      "name": "Monaco",
+      "country_iso_code": "MC",
+      "languages": [
+        "fr"
+      ]
+    },
+    "2498": {
+      "code": 2498,
+      "name": "Moldova",
+      "country_iso_code": "MD",
+      "languages": [
+        "ro"
+      ]
+    },
+    "2504": {
+      "code": 2504,
+      "name": "Morocco",
+      "country_iso_code": "MA",
+      "languages": [
+        "ar",
+        "fr"
+      ]
+    },
+    "2528": {
+      "code": 2528,
+      "name": "Netherlands",
+      "country_iso_code": "NL",
+      "languages": [
+        "nl"
+      ]
+    },
+    "2554": {
+      "code": 2554,
+      "name": "New Zealand",
+      "country_iso_code": "NZ",
+      "languages": [
+        "en"
+      ]
+    },
+    "2558": {
+      "code": 2558,
+      "name": "Nicaragua",
+      "country_iso_code": "NI",
+      "languages": [
+        "es"
+      ]
+    },
+    "2566": {
+      "code": 2566,
+      "name": "Nigeria",
+      "country_iso_code": "NG",
+      "languages": [
+        "en"
+      ]
+    },
+    "2578": {
+      "code": 2578,
+      "name": "Norway",
+      "country_iso_code": "NO",
+      "languages": [
+        "nb"
+      ]
+    },
+    "2586": {
+      "code": 2586,
+      "name": "Pakistan",
+      "country_iso_code": "PK",
+      "languages": [
+        "en",
+        "ur"
+      ]
+    },
+    "2591": {
+      "code": 2591,
+      "name": "Panama",
+      "country_iso_code": "PA",
+      "languages": [
+        "es"
+      ]
+    },
+    "2600": {
+      "code": 2600,
+      "name": "Paraguay",
+      "country_iso_code": "PY",
+      "languages": [
+        "es"
+      ]
+    },
+    "2604": {
+      "code": 2604,
+      "name": "Peru",
+      "country_iso_code": "PE",
+      "languages": [
+        "es"
+      ]
+    },
+    "2608": {
+      "code": 2608,
+      "name": "Philippines",
+      "country_iso_code": "PH",
+      "languages": [
+        "en",
+        "tl"
+      ]
+    },
+    "2616": {
+      "code": 2616,
+      "name": "Poland",
+      "country_iso_code": "PL",
+      "languages": [
+        "pl"
+      ]
+    },
+    "2620": {
+      "code": 2620,
+      "name": "Portugal",
+      "country_iso_code": "PT",
+      "languages": [
+        "pt"
+      ]
+    },
+    "2642": {
+      "code": 2642,
+      "name": "Romania",
+      "country_iso_code": "RO",
+      "languages": [
+        "ro"
+      ]
+    },
+    "2682": {
+      "code": 2682,
+      "name": "Saudi Arabia",
+      "country_iso_code": "SA",
+      "languages": [
+        "ar"
+      ]
+    },
+    "2686": {
+      "code": 2686,
+      "name": "Senegal",
+      "country_iso_code": "SN",
+      "languages": [
+        "fr"
+      ]
+    },
+    "2688": {
+      "code": 2688,
+      "name": "Serbia",
+      "country_iso_code": "RS",
+      "languages": [
+        "sr"
+      ]
+    },
+    "2702": {
+      "code": 2702,
+      "name": "Singapore",
+      "country_iso_code": "SG",
+      "languages": [
+        "en",
+        "zh-CN"
+      ]
+    },
+    "2703": {
+      "code": 2703,
+      "name": "Slovakia",
+      "country_iso_code": "SK",
+      "languages": [
+        "sk"
+      ]
+    },
+    "2704": {
+      "code": 2704,
+      "name": "Vietnam",
+      "country_iso_code": "VN",
+      "languages": [
+        "en",
+        "vi"
+      ]
+    },
+    "2705": {
+      "code": 2705,
+      "name": "Slovenia",
+      "country_iso_code": "SI",
+      "languages": [
+        "sl"
+      ]
+    },
+    "2710": {
+      "code": 2710,
+      "name": "South Africa",
+      "country_iso_code": "ZA",
+      "languages": [
+        "en"
+      ]
+    },
+    "2724": {
+      "code": 2724,
+      "name": "Spain",
+      "country_iso_code": "ES",
+      "languages": [
+        "es"
+      ]
+    },
+    "2752": {
+      "code": 2752,
+      "name": "Sweden",
+      "country_iso_code": "SE",
+      "languages": [
+        "sv"
+      ]
+    },
+    "2756": {
+      "code": 2756,
+      "name": "Switzerland",
+      "country_iso_code": "CH",
+      "languages": [
+        "de",
+        "fr",
+        "it"
+      ]
+    },
+    "2764": {
+      "code": 2764,
+      "name": "Thailand",
+      "country_iso_code": "TH",
+      "languages": [
+        "th"
+      ]
+    },
+    "2784": {
+      "code": 2784,
+      "name": "United Arab Emirates",
+      "country_iso_code": "AE",
+      "languages": [
+        "ar",
+        "en"
+      ]
+    },
+    "2788": {
+      "code": 2788,
+      "name": "Tunisia",
+      "country_iso_code": "TN",
+      "languages": [
+        "ar"
+      ]
+    },
+    "2792": {
+      "code": 2792,
+      "name": "Turkiye",
+      "country_iso_code": "TR",
+      "languages": [
+        "tr"
+      ]
+    },
+    "2804": {
+      "code": 2804,
+      "name": "Ukraine",
+      "country_iso_code": "UA",
+      "languages": [
+        "uk",
+        "ru"
+      ]
+    },
+    "2807": {
+      "code": 2807,
+      "name": "North Macedonia",
+      "country_iso_code": "MK",
+      "languages": [
+        "mk"
+      ]
+    },
+    "2818": {
+      "code": 2818,
+      "name": "Egypt",
+      "country_iso_code": "EG",
+      "languages": [
+        "ar",
+        "en"
+      ]
+    },
+    "2826": {
+      "code": 2826,
+      "name": "United Kingdom",
+      "country_iso_code": "GB",
+      "languages": [
+        "en"
+      ]
+    },
+    "2840": {
+      "code": 2840,
+      "name": "United States",
+      "country_iso_code": "US",
+      "languages": [
+        "en",
+        "es"
+      ]
+    },
+    "2854": {
+      "code": 2854,
+      "name": "Burkina Faso",
+      "country_iso_code": "BF",
+      "languages": [
+        "fr"
+      ]
+    },
+    "2858": {
+      "code": 2858,
+      "name": "Uruguay",
+      "country_iso_code": "UY",
+      "languages": [
+        "es"
+      ]
+    },
+    "2862": {
+      "code": 2862,
+      "name": "Venezuela",
+      "country_iso_code": "VE",
+      "languages": [
+        "es"
+      ]
+    }
+  },
+  "all_languages": {
+    "sq": {
+      "code": "sq",
+      "name": "Albanian"
+    },
+    "fr": {
+      "code": "fr",
+      "name": "French"
+    },
+    "ar": {
+      "code": "ar",
+      "name": "Arabic"
+    },
+    "pt": {
+      "code": "pt",
+      "name": "Portuguese"
+    },
+    "az": {
+      "code": "az",
+      "name": "Azeri"
+    },
+    "es": {
+      "code": "es",
+      "name": "Spanish"
+    },
+    "en": {
+      "code": "en",
+      "name": "English"
+    },
+    "de": {
+      "code": "de",
+      "name": "German"
+    },
+    "bn": {
+      "code": "bn",
+      "name": "Bengali"
+    },
+    "hy": {
+      "code": "hy",
+      "name": "Armenian"
+    },
+    "nl": {
+      "code": "nl",
+      "name": "Dutch"
+    },
+    "bs": {
+      "code": "bs",
+      "name": "Bosnian"
+    },
+    "bg": {
+      "code": "bg",
+      "name": "Bulgarian"
+    },
+    "zh-TW": {
+      "code": "zh-TW",
+      "name": "Chinese (Traditional)"
+    },
+    "hr": {
+      "code": "hr",
+      "name": "Croatian"
+    },
+    "el": {
+      "code": "el",
+      "name": "Greek"
+    },
+    "cs": {
+      "code": "cs",
+      "name": "Czech"
+    },
+    "da": {
+      "code": "da",
+      "name": "Danish"
+    },
+    "et": {
+      "code": "et",
+      "name": "Estonian"
+    },
+    "fi": {
+      "code": "fi",
+      "name": "Finnish"
+    },
+    "hu": {
+      "code": "hu",
+      "name": "Hungarian"
+    },
+    "hi": {
+      "code": "hi",
+      "name": "Hindi"
+    },
+    "id": {
+      "code": "id",
+      "name": "Indonesian"
+    },
+    "he": {
+      "code": "he",
+      "name": "Hebrew"
+    },
+    "it": {
+      "code": "it",
+      "name": "Italian"
+    },
+    "ja": {
+      "code": "ja",
+      "name": "Japanese"
+    },
+    "ru": {
+      "code": "ru",
+      "name": "Russian"
+    },
+    "ko": {
+      "code": "ko",
+      "name": "Korean"
+    },
+    "lv": {
+      "code": "lv",
+      "name": "Latvian"
+    },
+    "lt": {
+      "code": "lt",
+      "name": "Lithuanian"
+    },
+    "ms": {
+      "code": "ms",
+      "name": "Malay"
+    },
+    "ro": {
+      "code": "ro",
+      "name": "Romanian"
+    },
+    "nb": {
+      "code": "nb",
+      "name": "Norwegian (Bokmål)"
+    },
+    "ur": {
+      "code": "ur",
+      "name": "Urdu"
+    },
+    "tl": {
+      "code": "tl",
+      "name": "Tagalog"
+    },
+    "pl": {
+      "code": "pl",
+      "name": "Polish"
+    },
+    "sr": {
+      "code": "sr",
+      "name": "Serbian"
+    },
+    "zh-CN": {
+      "code": "zh-CN",
+      "name": "Chinese (Simplified)"
+    },
+    "sk": {
+      "code": "sk",
+      "name": "Slovak"
+    },
+    "vi": {
+      "code": "vi",
+      "name": "Vietnamese"
+    },
+    "sl": {
+      "code": "sl",
+      "name": "Slovenian"
+    },
+    "sv": {
+      "code": "sv",
+      "name": "Swedish"
+    },
+    "th": {
+      "code": "th",
+      "name": "Thai"
+    },
+    "tr": {
+      "code": "tr",
+      "name": "Turkish"
+    },
+    "uk": {
+      "code": "uk",
+      "name": "Ukrainian"
+    },
+    "mk": {
+      "code": "mk",
+      "name": "Macedonian"
+    }
+  }
+}

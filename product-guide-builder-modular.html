@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Description Guide Builder - Create SEO-Optimized Guides</title>
+    <meta name="description" content="Generate customized product description guides for your brand with AI-powered recommendations and SEO best practices.">
+    
+    <!-- Cache busting headers -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="cache-control" content="max-age=0">
+    <meta name="cache-control" content="no-cache">
+    <meta name="expires" content="0">
+    <meta name="expires" content="Tue, 01 Jan 1980 1:00:00 GMT">
+    <meta name="pragma" content="no-cache">
+    
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <a href="#" class="logo">
+                    <div class="logo-icon">P</div>
+                    <span>Product Description Guide Builder</span>
+                </a>
+                <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.875rem; color: var(--muted-text);">
+                    <div id="claudeApiStatus" class="api-status">
+                        <span class="status-dot" id="claudeStatusDot" style="background-color: green;"></span>
+                        <span>Claude API: Ready</span>
+                    </div>
+                    <div id="proxyStatus" class="api-status">
+                        <span class="status-dot" id="proxyStatusDot" style="background-color: #6B7280;"></span>
+                        <span id="proxyStatusText">Proxy: Checking...</span>
+                    </div>
+                    <span style="color: var(--secondary-color); font-weight: 500;">v2.0</span>
+                    <span id="lastUpdated">Loading...</span>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Admin Mode Panel (hidden by default) -->
+        <div id="adminPanel" class="admin-panel" style="display: none;">
+            <div class="admin-content">
+                <h3 style="color: var(--primary-color); margin-bottom: 12px;">🚀 Admin Mode</h3>
+                <p style="color: var(--muted-text); font-size: 14px; margin-bottom: 16px;">Quickly populate form with Wild Donkey test data</p>
+                <button id="autoFillBtn" class="admin-fill-btn">
+                    ✨ Auto-Fill Wild Donkey Data
+                </button>
+            </div>
+        </div>
+
+        <main class="main-content">
+            <div class="form-container">
+                <form id="productGuideForm" class="product-guide-form">
+                    
+                    <!-- Section 1: Brand Basics -->
+                    <div class="form-section" id="section-brand-basics">
+                        <h3 class="section-title">
+                            <span class="section-number">1</span>
+                            Brand Basics
+                        </h3>
+                        <div id="adminTestLink" style="display: none; margin-bottom: 1rem;">
+                            <a href="product-analysis-test.html" style="color: var(--primary-color); text-decoration: none; font-weight: 500;">
+                                🧪 Product Analysis Test Suite →
+                            </a>
+                        </div>
+                        
+                        <!-- Brand Name -->
+                        <div class="form-group">
+                            <label for="brandName" class="form-label">
+                                Brand Name <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="brandName" 
+                                name="brandName" 
+                                class="form-input" 
+                                placeholder="Enter your brand name"
+                                required
+                            >
+                        </div>
+                        
+                        <!-- Website URL -->
+                        <div class="form-group">
+                            <label for="websiteUrl" class="form-label">
+                                Website URL <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="url" 
+                                id="websiteUrl" 
+                                name="websiteUrl" 
+                                class="form-input" 
+                                placeholder="https://www.yourbrand.com"
+                                required
+                            >
+                            <p class="helper-text">Your main website homepage</p>
+                        </div>
+                        
+                        <!-- About Us URL -->
+                        <div class="form-group">
+                            <label for="aboutUrl" class="form-label">
+                                About Us Page URL
+                            </label>
+                            <input 
+                                type="url" 
+                                id="aboutUrl" 
+                                name="aboutUrl" 
+                                class="form-input" 
+                                placeholder="https://www.yourbrand.com/about"
+                            >
+                            <p class="helper-text">Helps us understand your brand story</p>
+                        </div>
+                        
+                        <!-- Industry Dropdown -->
+                        <div class="form-group">
+                            <label for="industry" class="form-label">
+                                Industry <span class="required">*</span>
+                            </label>
+                            <select id="industry" name="industry" class="form-select" required>
+                                <option value="">Select your industry</option>
+                                <option value="fashion-apparel">Fashion & Apparel</option>
+                                <option value="home-living">Home & Living</option>
+                                <option value="beauty-personal">Beauty & Personal Care</option>
+                                <option value="electronics-tech">Electronics & Tech</option>
+                                <option value="food-beverage">Food & Beverage</option>
+                                <option value="sports-outdoor">Sports & Outdoor</option>
+                                <option value="toys-kids">Toys & Kids</option>
+                                <option value="pet-products">Pet Products</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Other Industry (hidden by default) -->
+                        <div class="form-group" id="otherIndustryGroup" style="display: none;">
+                            <label for="otherIndustry" class="form-label">
+                                Please specify your industry <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="text" 
+                                id="otherIndustry" 
+                                name="otherIndustry" 
+                                class="form-input" 
+                                placeholder="e.g., Handmade Crafts"
+                            >
+                        </div>
+                    </div>
+                    
+                    <!-- Section 2: SEO Data -->
+                    <div class="form-section" id="section-seo-data">
+                        <h3 class="section-title">
+                            <span class="section-number">2</span>
+                            SEO Data
+                        </h3>
+                        
+                        <!-- Keyword Strategy CSV Upload -->
+                        <div class="form-group">
+                            <label for="keywordCsv" class="form-label">
+                                Comprehensive Keyword Strategy File (CSV/TSV)
+                                <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="file" 
+                                id="keywordCsv" 
+                                name="keywordCsv" 
+                                class="form-input" 
+                                accept=".csv,.tsv,.txt"
+                            >
+                            <p class="helper-text">Upload your keyword strategy file - includes page structure, meta data, search volumes, and SEO optimization details</p>
+                            <div id="csvPreview" class="csv-preview">
+                                <p><strong>📊 Keyword Strategy Preview:</strong></p>
+                                <div id="csvContent" class="csv-content"></div>
+                                <div id="csvSummary" class="csv-summary"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Geographic Target -->
+                        <div class="form-group">
+                            <label for="geoTarget" class="form-label">
+                                Geographic Target <span class="required">*</span>
+                            </label>
+                            <select id="geoTarget" name="geoTarget" class="form-select" required>
+                                <option value="">Select geographic target</option>
+                                <option value="UK">UK</option>
+                                <option value="US">US</option>
+                                <option value="AU">Australia</option>
+                                <option value="CA">Canada</option>
+                                <option value="EU">Europe</option>
+                                <option value="Global">Global</option>
+                            </select>
+                            <p class="helper-text">This will influence keyword recommendations and search strategies</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Section 3: Brand Identity -->
+                    <div class="form-section" id="section-brand-identity">
+                        <h3 class="section-title">
+                            <span class="section-number">3</span>
+                            Brand Identity
+                        </h3>
+                        
+                        <!-- Unique Selling Proposition -->
+                        <div class="form-group">
+                            <div class="usp-header">
+                                <label for="usp" class="form-label">
+                                    Unique Selling Proposition <span class="required">*</span>
+                                </label>
+                                <div class="usp-actions">
+                                    <button type="button" class="generate-usp-btn" id="generateUspBtn">
+                                        Generate from About Us
+                                    </button>
+                                    <button type="button" class="generate-usp-btn secondary" id="testProxyBtn">
+                                        Test Connection
+                                    </button>
+                                </div>
+                            </div>
+                            <textarea 
+                                id="usp" 
+                                name="usp" 
+                                class="form-textarea" 
+                                placeholder="What makes your brand unique? What sets you apart from competitors?"
+                                rows="3"
+                                required
+                            ></textarea>
+                            <div class="character-count">
+                                <span id="uspCount">0</span> / 500 characters
+                            </div>
+                        </div>
+                        
+                        <!-- Target Audience -->
+                        <div class="form-group">
+                            <label for="targetAudience" class="form-label">
+                                Target Audience <span class="required">*</span>
+                            </label>
+                            <textarea 
+                                id="targetAudience" 
+                                name="targetAudience" 
+                                class="form-textarea" 
+                                placeholder="Describe your ideal customers - demographics, interests, pain points, buying behavior"
+                                rows="3"
+                                required
+                            ></textarea>
+                            <div class="character-count">
+                                <span id="targetAudienceCount">0</span> / 300 characters
+                            </div>
+                        </div>
+                        
+                        <!-- Brand Voice -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                Brand Voice <span class="required">*</span>
+                            </label>
+                            <p class="helper-text">Select characteristics that describe your brand's personality</p>
+                            <div class="checkbox-grid">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="brandVoice" value="professional">
+                                    Professional
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="brandVoice" value="casual">
+                                    Casual
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="brandVoice" value="friendly">
+                                    Friendly
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="brandVoice" value="sophisticated">
+                                    Sophisticated
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="brandVoice" value="playful">
+                                    Playful
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="brandVoice" value="authoritative">
+                                    Authoritative
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="brandVoice" value="authentic">
+                                    Authentic
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="brandVoice" value="innovative">
+                                    Innovative
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="brandVoice" value="traditional">
+                                    Traditional
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="brandVoice" value="luxury">
+                                    Luxury
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="brandVoice" value="budget-friendly">
+                                    Budget-friendly
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="brandVoice" value="technical">
+                                    Technical
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="brandVoice" value="storytelling">
+                                    Storytelling
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Competitors -->
+                        <div class="form-group">
+                            <div class="competitors-header">
+                                <label class="form-label">
+                                    Key Competitors
+                                </label>
+                                <div class="competitor-buttons">
+                                    <button type="button" class="find-competitors-btn" id="findCompetitorsBtn">
+                                        🔍 Find Competitors
+                                    </button>
+                                    <button type="button" class="analyze-products-btn" id="analyzeProductsBtn" style="display: none;">
+                                        📦 Analyze Products
+                                    </button>
+                                </div>
+                            </div>
+                            <p class="helper-text">List your main competitors (we'll analyze their product descriptions)</p>
+                            <div id="competitorInputs" class="competitor-inputs">
+                                <div class="competitor-input-group">
+                                    <span class="competitor-number">1.</span>
+                                    <input type="url" name="competitor[]" class="form-input" placeholder="https://competitor.com">
+                                </div>
+                                <div class="competitor-input-group">
+                                    <span class="competitor-number">2.</span>
+                                    <input type="url" name="competitor[]" class="form-input" placeholder="https://competitor.com">
+                                </div>
+                                <div class="competitor-input-group">
+                                    <span class="competitor-number">3.</span>
+                                    <input type="url" name="competitor[]" class="form-input" placeholder="https://competitor.com">
+                                </div>
+                            </div>
+                            <button type="button" class="add-competitor-btn" id="addCompetitorBtn">
+                                + Add Another Competitor
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Section 4: Product Information -->
+                    <div class="form-section" id="section-product-info">
+                        <h3 class="section-title">
+                            <span class="section-number">4</span>
+                            Product Information
+                        </h3>
+                        
+                        <!-- Main Product Categories -->
+                        <div class="form-group">
+                            <label for="productCategories" class="form-label">
+                                Main Product Categories <span class="required">*</span>
+                            </label>
+                            <textarea 
+                                id="productCategories" 
+                                name="productCategories" 
+                                class="form-textarea" 
+                                placeholder="List your main product categories (e.g., Men's Clothing, Women's Accessories, Home Decor)"
+                                rows="3"
+                                required
+                            ></textarea>
+                            <div class="character-count">
+                                <span id="productCategoriesCount">0</span> / 500 characters
+                            </div>
+                        </div>
+                        
+                        <!-- Example Product URLs -->
+                        <div class="form-group">
+                            <label for="exampleUrls" class="form-label">
+                                Example Product URLs
+                            </label>
+                            <textarea 
+                                id="exampleUrls" 
+                                name="exampleUrls" 
+                                class="form-textarea" 
+                                placeholder="Paste URLs of your key products (one per line)"
+                                rows="5"
+                            ></textarea>
+                            <div class="character-count">
+                                <span id="exampleUrlsCount">0</span> / 1000 characters
+                            </div>
+                        </div>
+                        
+                        <!-- Current Product Description -->
+                        <div class="form-group">
+                            <label for="currentDescription" class="form-label">
+                                Current Product Description Example
+                            </label>
+                            <textarea 
+                                id="currentDescription" 
+                                name="currentDescription" 
+                                class="form-textarea" 
+                                placeholder="Paste an example of your current product descriptions (helps us understand your current style)"
+                                rows="5"
+                            ></textarea>
+                            <div class="character-count">
+                                <span id="currentDescriptionCount">0</span> / 1000 characters
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Generate Guide Button -->
+                    <div class="form-section generate-section">
+                        <button type="button" id="generateGuideBtn" class="generate-btn">
+                            <span class="btn-icon">✨</span>
+                            Generate Complete Guide
+                            <span class="btn-loading">
+                                <span class="loading-spinner"></span>
+                                Generating...
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Output Panel -->
+            <div class="output-panel">
+                <h2>Your Generated Guide</h2>
+                <div class="output-placeholder">
+                    <div class="placeholder-icon">📄</div>
+                    <h3>Ready to Generate Your Guide</h3>
+                    <p>Fill out the form and click "Generate Complete Guide" to create your customized SEO product description guide.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Load JavaScript Modules -->
+    <script src="js/form-handler.js"></script>
+    <script src="js/competitor-analysis.js"></script>
+    <script src="js/product-analyzer.js"></script>
+    <script src="js/guide-generation.js"></script>
+    <script src="js/app.js"></script>
+    
+    <!-- Cache Busting Script -->
+    <script>
+        // Force cache clearing on page load
+        window.addEventListener('load', function() {
+            // Clear all browser caches
+            if ('caches' in window) {
+                caches.keys().then(function(names) {
+                    for (let name of names) {
+                        caches.delete(name);
+                    }
+                });
+            }
+            
+            // Add timestamp to prevent caching
+            const timestamp = Date.now();
+            console.log('🔄 Cache cleared, timestamp:', timestamp);
+            
+            // Force reload from server if this is a cached version
+            if (window.performance && performance.navigation.type === 2) {
+                console.log('⚠️ Page loaded from cache, forcing reload...');
+                window.location.reload(true);
+            }
+            
+            window.cacheBreaker = Date.now();
+        });
+    </script>
+</body>
+</html>

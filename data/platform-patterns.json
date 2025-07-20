@@ -1,0 +1,186 @@
+{
+  "platforms": {
+    "shopify": {
+      "name": "Shopify",
+      "detection": {
+        "html_patterns": [
+          {
+            "pattern": "Shopify\\.shop",
+            "weight": 10,
+            "description": "Shopify.shop global object"
+          },
+          {
+            "pattern": "cdn\\.shopify\\.com|cdn\\.shopifycdn\\.com",
+            "weight": 8,
+            "description": "Shopify CDN URLs"
+          },
+          {
+            "pattern": "<[^>]+class=[\"'][^\"']*shopify-section[^\"']*[\"']",
+            "weight": 7,
+            "description": "Shopify section classes"
+          },
+          {
+            "pattern": "data-shopify|shopify-analytics|shopify_features",
+            "weight": 5,
+            "description": "Shopify data attributes"
+          },
+          {
+            "pattern": "/cdn/shop/t/\\d+/assets/",
+            "weight": 6,
+            "description": "Shopify theme assets path"
+          },
+          {
+            "pattern": "ShopifyAnalytics\\.meta|Shopify\\.theme|Shopify\\.currency",
+            "weight": 8,
+            "description": "Shopify JavaScript objects"
+          },
+          {
+            "pattern": "monorail-edge\\.shopifysvc\\.com",
+            "weight": 7,
+            "description": "Shopify analytics service"
+          },
+          {
+            "pattern": "<meta[^>]+property=[\"']og:platform[\"'][^>]+content=[\"']shopify[\"']",
+            "weight": 10,
+            "description": "Shopify platform meta tag"
+          }
+        ],
+        "confidence_threshold": 15
+      },
+      "patterns": {
+        "plp": {
+          "confirmed_regex": "/collections/[\\w-]+$",
+          "examples": [
+            "/collections/all",
+            "/collections/all-products",
+            "/collections/mens",
+            "/collections/womens",
+            "/collections/keto-chow"
+          ],
+          "exclude_patterns": [
+            "/collections$",
+            "/collections/.*\\.xml",
+            "/collections/.*\\.json"
+          ]
+        },
+        "pdp": {
+          "confirmed_regex": "/products/[\\w-]+$",
+          "examples": [
+            "/products/example-product",
+            "/products/another-product-name",
+            "/products/lavazza-super-crema-whole-bean-espresso-coffee",
+            "/products/maromas-orphea-whole-bean-espresso",
+            "/products/gaggia-decalcifier-4adf31c1-5733-464a-91c2-ffbda32ef649"
+          ],
+          "collection_pdp_regex": "/collections/[\\w-]+/products/[\\w-]+$"
+        }
+      },
+      "verified_domains": [
+        "wholelattelove.com",
+        "allbirds.com",
+        "bombas.com",
+        "colourpop.com",
+        "deathwishcoffee.com",
+        "rothys.com",
+        "beardbrand.com",
+        "chubbiesshorts.com",
+        "hiutdenim.co.uk",
+        "ketochow.xyz",
+        "tentree.com",
+        "mudwtr.com",
+        "blendjet.com",
+        "memobottle.com"
+      ],
+      "success_count": 36,
+      "failure_count": 4
+    },
+    "woocommerce": {
+      "name": "WooCommerce",
+      "detection": {
+        "html_signatures": [
+          "woocommerce",
+          "wp-content/plugins/woocommerce",
+          "wc-product"
+        ],
+        "confidence_threshold": 1
+      },
+      "patterns": {
+        "plp": {
+          "confirmed_regex": "/shop/?$|/product-category/[\\w-]+/?$",
+          "examples": [
+            "/shop",
+            "/product-category/electronics"
+          ]
+        },
+        "pdp": {
+          "confirmed_regex": "/product/[\\w-]+/?$",
+          "examples": [
+            "/product/sample-product"
+          ]
+        }
+      },
+      "verified_domains": [],
+      "success_count": 0,
+      "failure_count": 0
+    },
+    "magento": {
+      "name": "Magento",
+      "detection": {
+        "html_signatures": [
+          "Magento",
+          "mage/",
+          "Mage\\.Cookies"
+        ],
+        "confidence_threshold": 1
+      },
+      "patterns": {
+        "plp": {
+          "confirmed_regex": "/[\\w-]+\\.html$",
+          "examples": [
+            "/electronics.html",
+            "/mens-clothing.html"
+          ]
+        },
+        "pdp": {
+          "confirmed_regex": "/[\\w-]+/[\\w-]+\\.html$",
+          "examples": [
+            "/electronics/laptop.html"
+          ]
+        }
+      },
+      "verified_domains": [],
+      "success_count": 0,
+      "failure_count": 0
+    },
+    "bigcommerce": {
+      "name": "BigCommerce",
+      "detection": {
+        "html_signatures": [
+          "bigcommerce",
+          "cdn\\d+\\.bigcommerce\\.com"
+        ],
+        "confidence_threshold": 1
+      },
+      "patterns": {
+        "plp": {
+          "confirmed_regex": "/[\\w-]+/?$",
+          "examples": [
+            "/categories/electronics",
+            "/brands/apple"
+          ]
+        },
+        "pdp": {
+          "confirmed_regex": "/[\\w-]+/[\\w-]+/?$",
+          "examples": [
+            "/electronics/laptop-computer"
+          ]
+        }
+      },
+      "verified_domains": [],
+      "success_count": 0,
+      "failure_count": 0
+    }
+  },
+  "learning_enabled": true,
+  "last_updated": "2025-07-19T09:58:05.804Z"
+}

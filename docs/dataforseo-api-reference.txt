@@ -1,0 +1,170 @@
+# DataForSEO API Reference Documentation
+# Source: https://docs.dataforseo.com/v3/llms.txt/
+# Saved: $(date)
+
+# DataForSEO API Documentation
+
+DataForSEO provides a comprehensive suite of APIs for retrieving search results, keyword data, and SEO-related information from multiple search engines and platforms.
+
+## Authentication
+
+Create an account with DataForSEO and then use the credentials from your account dashboard to access DataForSEO APIs.
+
+## SERP APIs
+
+The SERP (Search Engine Results Pages) APIs allow you to retrieve search results from various search engines in real-time.
+
+### Supported Search Engines:
+- Google
+- Bing
+- Yahoo
+- Baidu
+- Naver
+- Seznam
+- YouTube
+
+### Search Types Available:
+- Organic search results
+- Local search results
+- Images search results
+- News search results
+- Finance search results
+- Shopping search results
+- Maps search results
+- And many more specialized search types
+
+### Example SERP API Endpoints:
+- GET /v3/serp/google/organic/live/advanced
+- GET /v3/serp/google/local/live/advanced
+- GET /v3/serp/google/images/live/advanced
+- GET /v3/serp/bing/organic/live/advanced
+
+## Keywords Data APIs
+
+The Keywords Data APIs provide keyword research capabilities, search volume data, and keyword suggestions.
+
+### Available Data Sources:
+- Google Ads
+- Bing Ads
+- Google Trends
+
+### Key Features:
+- Historical search volume data
+- Keyword suggestions and related keywords
+- Search volume trends over time
+- Audience estimation for ad campaigns
+- Keyword difficulty and competition metrics
+
+### Example Keywords Data Endpoints:
+- GET /v3/keywords_data/google_ads/search_volume/live
+- GET /v3/keywords_data/google_ads/keywords_for_keywords/live
+- GET /v3/keywords_data/google_trends/explore/live
+
+## Locations and Languages
+
+DataForSEO supports search results and keyword data for specific geographic locations and languages.
+
+### Location Support:
+- Country-level targeting
+- State/region-level targeting
+- City-level targeting
+- Custom geographic coordinates
+
+### Language Support:
+- Major world languages
+- Location-specific language variations
+- Multi-language keyword research
+
+### Getting Available Locations and Languages:
+- GET /v3/dataforseo_labs/locations_and_languages
+- GET /v3/serp/google/locations
+- GET /v3/serp/google/languages
+
+## Live vs. Historical Data
+
+DataForSEO offers both real-time (live) and historical data retrieval:
+
+### Live Data:
+- Real-time search results
+- Current keyword search volumes
+- Up-to-date SERP features
+
+### Historical Data:
+- Search volume trends over time
+- Historical SERP changes
+- Keyword performance tracking
+
+## Pricing Model
+
+- Typically charged only for task posting
+- Results can be retrieved free within 30 days for most endpoints
+- Some API endpoints are free to query
+- Pricing varies by endpoint and data complexity
+
+## Rate Limits and Best Practices
+
+- Respect API rate limits to avoid throttling
+- Use batch requests when possible for efficiency
+- Cache results appropriately to minimize API calls
+- Monitor your usage through the dashboard
+
+## Common Use Cases
+
+1. **SEO Monitoring**: Track search rankings and SERP features
+2. **Keyword Research**: Find relevant keywords and search volumes
+3. **Competitor Analysis**: Monitor competitor search performance
+4. **Content Optimization**: Identify content gaps and opportunities
+5. **Local SEO**: Track local search results and visibility
+6. **PPC Campaign Planning**: Research keywords for ad campaigns
+
+## Error Handling
+
+DataForSEO APIs return standardized error responses with:
+- Status codes indicating success or failure
+- Detailed error messages for troubleshooting
+- Cost information for successful requests
+
+## Sample Response Structure
+
+All API responses follow a consistent structure:
+```json
+{
+  "version": "0.1.20240101",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "1.23 sec.",
+  "cost": 0.001,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "task-id",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "1.23 sec.",
+      "cost": 0.001,
+      "result_count": 1,
+      "path": ["v3", "endpoint", "path"],
+      "data": {},
+      "result": []
+    }
+  ]
+}
+```
+
+## Getting Started
+
+1. Sign up for a DataForSEO account
+2. Get your API credentials from the dashboard
+3. Choose the appropriate endpoint for your use case
+4. Make your first API request
+5. Process the returned data for your application
+
+For detailed endpoint documentation, parameter specifications, and code examples, visit the full API documentation at https://docs.dataforseo.com/v3/
+
+## Support and Resources
+
+- API Documentation: https://docs.dataforseo.com/v3/
+- Help Center: Available through the DataForSEO dashboard
+- Status Page: Monitor API uptime and performance
+- Community: Developer forums and support channels

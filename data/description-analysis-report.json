@@ -1,0 +1,21 @@
+{
+  "timestamp": "2025-07-19T10:51:11.800Z",
+  "platforms": {
+    "shopify": {
+      "avgChars": 775.8333333333334,
+      "avgWords": 112.83333333333333,
+      "samples": 6
+    },
+    "woocommerce": {
+      "avgChars": 783,
+      "avgWords": 117,
+      "samples": 5
+    }
+  },
+  "recommendations": {
+    "minimum": 400,
+    "good": 600,
+    "optimal": 800,
+    "premium": 1200
+  }
+}

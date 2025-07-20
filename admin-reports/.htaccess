@@ -1,0 +1,9 @@
+# Protect admin reports
+Order Deny,Allow
+Deny from all
+
+# Add password protection
+AuthType Basic
+AuthName "Admin Access Required"
+AuthUserFile /Users/addhass/Documents/SEO Tools/Product Description Guide/admin-reports/.htpasswd
+Require valid-user

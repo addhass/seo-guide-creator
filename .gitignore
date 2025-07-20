@@ -1,0 +1,57 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Sensitive Data
+server/API.txt
+*.env
+.env.*
+config/secrets.json
+
+# Logs
+*.log
+logs/
+server.log
+admin-reports/*.html
+admin-reports/access.log
+
+# Cache and temporary files
+.DS_Store
+*.tmp
+*.temp
+*.cache
+proxy-cache.json
+data/proxy-cache.json
+
+# Test files
+test-*.html
+test-*.js
+debug-*.html
+tests/test-results/
+
+# Generated files
+generated-guides/*.json
+generated-guides/*.pdf
+generated-guides/*.docx
+
+# Development files
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-*
+
+# Backup files
+backup/
+*.backup
+*.bak
+
+# Local data files that might contain client info
+data/backlog-sites.json
+data/batch-issues.json
+data/extraction-stats-history.json
+data/scraping-patterns-v2.json
+
+# Keep example files
+!Examples/
