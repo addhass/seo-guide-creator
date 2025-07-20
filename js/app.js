@@ -59,9 +59,22 @@ class ProductGuideApp {
         
         const loginBtn = document.getElementById('loginBtn');
         
+        // Make sure login button has default behavior
+        if (loginBtn) {
+            loginBtn.onclick = () => {
+                window.location.href = 'auth.html';
+            };
+        }
+        
+        // Check if Supabase is available
+        if (!window.supabase) {
+            console.warn('⚠️ Supabase not available, skipping auth check');
+            return;
+        }
+        
         try {
             // Check if user is logged in
-            const user = await window.supabaseClient.auth.getUser();
+            const { data: { user } } = await supabase.auth.getUser();
             
             if (user) {
                 // User is logged in
