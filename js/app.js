@@ -82,7 +82,7 @@ class ProductGuideApp {
                 
                 // Update login button
                 if (loginBtn) {
-                    loginBtn.textContent = 'Dashboard';
+                    loginBtn.textContent = 'My Account';
                     loginBtn.style.background = '#10B981'; // Green
                     loginBtn.onclick = () => {
                         window.location.href = 'dashboard.html';
