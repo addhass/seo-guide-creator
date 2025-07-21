@@ -749,6 +749,13 @@ Test About URL: ${document.getElementById('testAboutUrl').value}
                         hasDataForSEO ? 'success' : 'warning');
                     log(`Anthropic: ${hasAnthropic ? '✅ Configured' : '⚠️ Not configured'}`, 
                         hasAnthropic ? 'success' : 'warning');
+                    
+                    if (!hasDataForSEO) {
+                        log('→ Add DataForSEO credentials in the Dashboard to enable competitor discovery', 'info');
+                    }
+                    if (!hasAnthropic) {
+                        log('→ Add Anthropic API key in the Dashboard to enable AI analysis', 'info');
+                    }
                 }
             } catch (error) {
                 log(`Failed to check API keys: ${error.message}`, 'error');
@@ -970,16 +977,18 @@ Test About URL: ${document.getElementById('testAboutUrl').value}
                         ${error.message.includes('DataForSEO') ? `
                             <p style="margin-top: 10px;"><strong>Solution:</strong></p>
                             <ol style="margin: 10px 0; padding-left: 20px;">
-                                <li>Go to your Vercel dashboard</li>
-                                <li>Navigate to Settings → Environment Variables</li>
-                                <li>Add these variables:
+                                <li>Go to the <a href="dashboard.html" target="_blank">Dashboard</a></li>
+                                <li>Click on "API Keys" section</li>
+                                <li>Add your DataForSEO credentials:
                                     <ul style="margin-top: 5px;">
-                                        <li><code>DATAFORSEO_LOGIN</code> = your DataForSEO username</li>
-                                        <li><code>DATAFORSEO_PASSWORD</code> = your DataForSEO password</li>
+                                        <li>Service: DataForSEO</li>
+                                        <li>Format: <code>username:password</code></li>
+                                        <li>Example: <code>myusername:mypassword</code></li>
                                     </ul>
                                 </li>
-                                <li>Redeploy your application</li>
+                                <li>Click "Add Key" to save</li>
                             </ol>
+                            <p style="margin-top: 10px;"><em>Your API keys are stored securely in your account and used automatically.</em></p>
                         ` : ''}
                     </div>
                 `;
