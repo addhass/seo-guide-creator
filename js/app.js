@@ -285,7 +285,7 @@ class ProductGuideApp {
                     font-weight: 500;
                     min-width: 150px;
                 ">Load Keywords</button>
-                <a href="test-full-system.html" style="
+                <a href="system-test-suite.html" style="
                     background: white;
                     color: #FFA500;
                     border: none;
