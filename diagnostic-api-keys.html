@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Key Detection Diagnostic</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .warning { background: #fff3cd; color: #856404; }
+        .info { background: #d1ecf1; color: #0c5460; }
+        pre {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        .log-entry {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <h1>API Key Detection Diagnostic</h1>
+    
+    <div class="test-card">
+        <h2>Test Results</h2>
+        <div id="results"></div>
+    </div>
+    
+    <div class="test-card">
+        <h2>Detailed Log</h2>
+        <div id="log"></div>
+    </div>
+
+    <!-- Load scripts in the same order as test suite -->
+    <script src="js/cache-buster.js?v=2.9"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js?v=2.9"></script>
+    <script src="js/supabase-client.js?v=2.9"></script>
+    
+    <script>
+        const log = (message, type = 'info') => {
+            const logDiv = document.getElementById('log');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.innerHTML = `<span class="status ${type}">${type.toUpperCase()}</span> ${new Date().toLocaleTimeString()}: ${message}`;
+            logDiv.appendChild(entry);
+            console.log(`[${type}] ${message}`);
+        };
+
+        const addResult = (test, result, details = '') => {
+            const resultsDiv = document.getElementById('results');
+            const resultDiv = document.createElement('div');
+            resultDiv.style.marginBottom = '10px';
+            resultDiv.innerHTML = `
+                <strong>${test}:</strong> 
+                <span class="status ${result ? 'success' : 'error'}">${result ? 'PASS' : 'FAIL'}</span>
+                ${details ? `<br><small>${details}</small>` : ''}
+            `;
+            resultsDiv.appendChild(resultDiv);
+        };
+
+        async function runDiagnostics() {
+            log('Starting API key detection diagnostics...', 'info');
+            
+            // Test 1: Check if window.supabase exists
+            log('Test 1: Checking window.supabase...', 'info');
+            addResult('window.supabase exists', !!window.supabase, 
+                window.supabase ? 'Supabase library loaded' : 'Supabase library not found');
+            
+            // Test 2: Check if window.supabaseClient exists
+            log('Test 2: Checking window.supabaseClient...', 'info');
+            addResult('window.supabaseClient exists', !!window.supabaseClient,
+                window.supabaseClient ? 'supabaseClient module loaded' : 'supabaseClient module not found');
+            
+            if (window.supabaseClient) {
+                // Test 3: Check module properties
+                log('Test 3: Checking module properties...', 'info');
+                const hasInit = !!window.supabaseClient.init;
+                const hasAuth = !!window.supabaseClient.auth;
+                const hasApiKeys = !!window.supabaseClient.apiKeys;
+                
+                addResult('supabaseClient.init exists', hasInit);
+                addResult('supabaseClient.auth exists', hasAuth);
+                addResult('supabaseClient.apiKeys exists', hasApiKeys);
+                
+                // Test 4: Initialize supabase
+                if (hasInit) {
+                    try {
+                        log('Test 4: Initializing supabase...', 'info');
+                        const client = await window.supabaseClient.init();
+                        addResult('Supabase initialization', true, 'Client initialized successfully');
+                        
+                        // Test 5: Check authentication
+                        log('Test 5: Checking authentication...', 'info');
+                        const { data: { session }, error } = await client.auth.getSession();
+                        
+                        if (error) {
+                            addResult('Authentication check', false, `Error: ${error.message}`);
+                            log(`Auth error: ${error.message}`, 'error');
+                        } else if (session) {
+                            addResult('Authentication check', true, `Logged in as: ${session.user.email}`);
+                            log(`Authenticated as: ${session.user.email}`, 'success');
+                            
+                            // Test 6: Check API keys
+                            if (hasApiKeys) {
+                                log('Test 6: Checking API keys...', 'info');
+                                try {
+                                    const keys = await window.supabaseClient.apiKeys.getAll();
+                                    
+                                    if (keys.error) {
+                                        addResult('API keys retrieval', false, `Error: ${keys.error.message}`);
+                                        log(`API keys error: ${keys.error.message}`, 'error');
+                                    } else if (keys.data) {
+                                        addResult('API keys retrieval', true, `Found ${keys.data.length} keys`);
+                                        
+                                        // Check for specific keys
+                                        const hasDataForSEO = keys.data.some(k => k.service === 'dataforseo');
+                                        const hasAnthropic = keys.data.some(k => k.service === 'anthropic');
+                                        
+                                        addResult('DataForSEO key', hasDataForSEO, 
+                                            hasDataForSEO ? 'Key configured' : 'No key found');
+                                        addResult('Anthropic key', hasAnthropic,
+                                            hasAnthropic ? 'Key configured' : 'No key found');
+                                        
+                                        // Log key details (without exposing actual keys)
+                                        keys.data.forEach(key => {
+                                            log(`Found key: ${key.service} (hint: ${key.key_hint})`, 'info');
+                                        });
+                                    }
+                                } catch (err) {
+                                    addResult('API keys retrieval', false, `Exception: ${err.message}`);
+                                    log(`API keys exception: ${err.message}`, 'error');
+                                }
+                            }
+                        } else {
+                            addResult('Authentication check', false, 'Not logged in');
+                            log('Not authenticated', 'warning');
+                        }
+                    } catch (err) {
+                        addResult('Supabase initialization', false, `Exception: ${err.message}`);
+                        log(`Init exception: ${err.message}`, 'error');
+                    }
+                }
+            }
+            
+            // Test 7: Direct Supabase test (fallback)
+            if (!window.supabaseClient && window.supabase) {
+                log('Test 7: Testing direct Supabase client...', 'warning');
+                try {
+                    const SUPABASE_URL = 'https://jdqdfejuesqbcxjwbcwl.supabase.co';
+                    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpkcWRmZWp1ZXNxYmN4andiY3dsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMwMjQyNjgsImV4cCI6MjA2ODYwMDI2OH0._co76nJaxBJDKN25wpbbTMJE5QEY3wsQ-1H9MvrMXGs';
+                    
+                    const directClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    const { data: { session } } = await directClient.auth.getSession();
+                    
+                    addResult('Direct Supabase client', true, 
+                        session ? `Authenticated as: ${session.user.email}` : 'Not authenticated');
+                    
+                    log('Note: Direct client cannot access API keys functionality', 'warning');
+                } catch (err) {
+                    addResult('Direct Supabase client', false, `Error: ${err.message}`);
+                }
+            }
+            
+            log('Diagnostics complete!', 'success');
+        }
+
+        // Run diagnostics with different delays to test timing issues
+        window.addEventListener('DOMContentLoaded', () => {
+            log('DOM loaded, waiting for scripts...', 'info');
+            
+            // Try immediately
+            setTimeout(() => {
+                log('=== Attempt 1: Immediate (100ms) ===', 'info');
+                runDiagnostics();
+            }, 100);
+            
+            // Try after a short delay
+            setTimeout(() => {
+                log('=== Attempt 2: After 1 second ===', 'info');
+                runDiagnostics();
+            }, 1000);
+            
+            // Try after a longer delay
+            setTimeout(() => {
+                log('=== Attempt 3: After 3 seconds ===', 'info');
+                runDiagnostics();
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
