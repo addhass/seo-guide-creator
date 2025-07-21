@@ -924,42 +924,6 @@ Test About URL: ${document.getElementById('testAboutUrl').value}
                 });
                 
                 if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({ error: response.statusText }));
-                    if (errorData.error && errorData.error.includes('DataForSEO credentials')) {
-                        log('⚠️ DataForSEO credentials not configured on server - using mock data for testing', 'warning');
-                        // Use mock data for testing when credentials aren't available
-                        const mockResults = {
-                            success: true,
-                            uniqueCompetitors: [
-                                { domain: 'example-competitor1.com', relevanceScore: 0.95 },
-                                { domain: 'example-competitor2.com', relevanceScore: 0.87 },
-                                { domain: 'example-competitor3.com', relevanceScore: 0.82 }
-                            ],
-                            keywords_analyzed: keywords.length,
-                            timestamp: new Date().toISOString()
-                        };
-                        
-                        // Display mock results
-                        const results = document.getElementById('competitorResults');
-                        results.style.display = 'block';
-                        results.innerHTML = `
-                            <h4>Top Competitors (Mock Data):</h4>
-                            ${mockResults.uniqueCompetitors.map((c, i) => `
-                                <div class="result-item">
-                                    ${i + 1}. <strong>${c.domain}</strong>
-                                    <span style="float: right;">Score: ${c.relevanceScore.toFixed(2)}</span>
-                                </div>
-                            `).join('')}
-                            <p style="margin-top: 10px; color: #ff6b00; font-size: 12px;">
-                                ⚠️ Using mock data - DataForSEO credentials not configured on server
-                            </p>
-                        `;
-                        
-                        setBadge('competitor-test-badge', 'warning', 'Mock Data');
-                        btn.disabled = false;
-                        btn.innerHTML = '🧪 Test Discovery';
-                        return;
-                    }
                     const errorText = await response.text();
                     let errorMsg;
                     try {
@@ -995,6 +959,30 @@ Test About URL: ${document.getElementById('testAboutUrl').value}
             } catch (error) {
                 log(`Competitor test error: ${error.message}`, 'error');
                 setBadge('competitor-test-badge', 'error', 'Failed');
+                
+                // Display error details
+                const results = document.getElementById('competitorResults');
+                results.style.display = 'block';
+                results.innerHTML = `
+                    <h4 style="color: #dc3545;">Error Details:</h4>
+                    <div class="result-item" style="background: #f8d7da; padding: 15px; border-radius: 8px;">
+                        <p><strong>Error:</strong> ${error.message}</p>
+                        ${error.message.includes('DataForSEO') ? `
+                            <p style="margin-top: 10px;"><strong>Solution:</strong></p>
+                            <ol style="margin: 10px 0; padding-left: 20px;">
+                                <li>Go to your Vercel dashboard</li>
+                                <li>Navigate to Settings → Environment Variables</li>
+                                <li>Add these variables:
+                                    <ul style="margin-top: 5px;">
+                                        <li><code>DATAFORSEO_LOGIN</code> = your DataForSEO username</li>
+                                        <li><code>DATAFORSEO_PASSWORD</code> = your DataForSEO password</li>
+                                    </ul>
+                                </li>
+                                <li>Redeploy your application</li>
+                            </ol>
+                        ` : ''}
+                    </div>
+                `;
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = '🧪 Test Discovery';
@@ -1232,12 +1220,24 @@ Content: ${pageData.text?.substring(0, 2000)}`
                 const aboutBadge = document.getElementById('about-test-badge').textContent;
                 const productBadge = document.getElementById('product-test-badge').textContent;
                 
-                if (competitorBadge === 'Mock Data') {
-                    log('⚠️ Competitor Discovery: Using mock data (DataForSEO credentials needed on server)', 'warning');
-                }
+                let passedTests = 0;
+                let failedTests = 0;
                 
-                log('✅ All other tests completed successfully!', 'success');
-                log('Note: DataForSEO credentials need to be configured as environment variables on the Vercel server for full functionality.', 'info');
+                if (competitorBadge === 'Success') passedTests++;
+                else if (competitorBadge === 'Failed') failedTests++;
+                
+                if (aboutBadge === 'Success') passedTests++;
+                else if (aboutBadge === 'Failed' || aboutBadge === 'No Content') failedTests++;
+                
+                if (productBadge === 'Success') passedTests++;
+                else if (productBadge === 'Failed') failedTests++;
+                
+                log(`Tests Passed: ${passedTests} | Tests Failed: ${failedTests}`, 
+                    failedTests > 0 ? 'warning' : 'success');
+                
+                if (failedTests > 0) {
+                    log('Check the individual test results above for error details and solutions.', 'info');
+                }
             }, 3000);
         }
         
