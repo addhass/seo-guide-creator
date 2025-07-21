@@ -695,16 +695,27 @@ Test About URL: ${document.getElementById('testAboutUrl').value}
         // Get auth token
         async function getAuthToken() {
             try {
+                // If no instance, try to get it from the module
+                if (!supabaseInstance && window.supabaseClient && window.supabaseClient.init) {
+                    supabaseInstance = await window.supabaseClient.init();
+                    log('Re-initialized supabase instance for auth token', 'info');
+                }
+                
                 // Always use supabaseInstance which was initialized in initAuth
-                if (supabaseInstance) {
+                if (supabaseInstance && supabaseInstance.auth) {
                     const { data: { session } } = await supabaseInstance.auth.getSession();
                     return session?.access_token || null;
                 } else {
                     log('No supabase instance available', 'error');
+                    log(`supabaseInstance exists: ${!!supabaseInstance}`, 'error');
+                    if (supabaseInstance) {
+                        log(`supabaseInstance.auth exists: ${!!supabaseInstance.auth}`, 'error');
+                    }
                     return null;
                 }
             } catch (error) {
                 log(`Failed to get auth token: ${error.message}`, 'error');
+                console.error('Auth token error details:', error);
                 return null;
             }
         }
@@ -1221,14 +1232,24 @@ Content: ${pageData.text?.substring(0, 2000)}`
         async function runAllTests() {
             log('Starting complete system test...', 'info');
             
-            // Check authentication first
-            const isAuth = await initAuth();
-            if (!isAuth) {
-                log('Please login first to run tests', 'error');
-                if (confirm('You need to be logged in to run tests. Click OK to go to the login page.')) {
-                    window.location.href = 'auth.html';
+            // Don't re-initialize if already authenticated
+            if (!currentUser) {
+                const isAuth = await initAuth();
+                if (!isAuth) {
+                    log('Please login first to run tests', 'error');
+                    if (confirm('You need to be logged in to run tests. Click OK to go to the login page.')) {
+                        window.location.href = 'auth.html';
+                    }
+                    return;
                 }
-                return;
+            } else {
+                log(`Already authenticated as ${currentUser.email}`, 'info');
+            }
+            
+            // Verify supabaseInstance is available
+            if (!supabaseInstance) {
+                log('⚠️ Supabase instance not available, re-initializing...', 'warning');
+                await initAuth();
             }
             
             // Run tests in sequence
