@@ -924,8 +924,15 @@ Test About URL: ${document.getElementById('testAboutUrl').value}
                 });
                 
                 if (!response.ok) {
-                    const error = await response.text();
-                    throw new Error(error);
+                    const errorText = await response.text();
+                    let errorMsg;
+                    try {
+                        const errorObj = JSON.parse(errorText);
+                        errorMsg = errorObj.error || errorObj.message || errorText;
+                    } catch {
+                        errorMsg = errorText;
+                    }
+                    throw new Error(errorMsg);
                 }
                 
                 const data = await response.json();
@@ -1020,14 +1027,26 @@ Content: ${pageData.text?.substring(0, 2000)}`
                 
                 const result = await analyzeResponse.json();
                 log('✅ Analysis completed', 'success');
+                log(`Response structure: ${JSON.stringify(Object.keys(result))}`, 'info');
                 setBadge('about-test-badge', 'success', 'Success');
                 
                 const results = document.getElementById('aboutResults');
                 results.style.display = 'block';
+                
+                // Handle different response formats
+                let analysisText = 'No analysis generated';
+                if (result.content && Array.isArray(result.content) && result.content[0]?.text) {
+                    analysisText = result.content[0].text;
+                } else if (result.content && typeof result.content === 'string') {
+                    analysisText = result.content;
+                } else if (result.message) {
+                    analysisText = result.message;
+                }
+                
                 results.innerHTML = `
                     <h4>Generated Analysis:</h4>
                     <div class="result-item" style="white-space: pre-wrap;">
-                        ${result.content[0]?.text || 'No analysis generated'}
+                        ${analysisText}
                     </div>
                 `;
                 
