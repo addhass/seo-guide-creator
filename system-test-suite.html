@@ -296,10 +296,55 @@
         .badge.success { background: #d4edda; color: #155724; }
         .badge.error { background: #f8d7da; color: #721c24; }
         .badge.warning { background: #fff3cd; color: #856404; }
+        
+        /* Admin bar styles */
+        #adminBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 35px;
+            background: #FFA500;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            z-index: 10000;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        #adminBar button, #adminBar a {
+            background: white;
+            color: #FFA500;
+            border: none;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            min-width: 150px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        #adminBar button:hover, #adminBar a:hover {
+            background: #f0f0f0;
+        }
+        
+        /* Adjust body padding when admin bar is shown */
+        body.admin-mode {
+            padding-top: 35px;
+        }
     </style>
 </head>
 <body>
     <h1>🚀 SEO Guide Creator - Live System Test</h1>
+    
+    <!-- Admin Bar will be inserted here by JavaScript -->
     
     <!-- User Info Card -->
     <div class="status-card user-info-card" id="userInfoCard" style="display: none;">
@@ -433,7 +478,12 @@
     
     <!-- Test Logs -->
     <div class="status-card">
-        <h2 class="card-title">📋 Test Logs</h2>
+        <div class="card-header">
+            <h2 class="card-title">📋 Test Logs</h2>
+            <button onclick="copyLogs()" class="secondary">
+                📋 Copy Logs
+            </button>
+        </div>
         <div class="log-area" id="logArea"></div>
     </div>
     
@@ -462,6 +512,55 @@
         function clearLogs() {
             document.getElementById('logArea').innerHTML = '';
             log('Logs cleared', 'info');
+        }
+        
+        // Copy logs to clipboard
+        function copyLogs() {
+            const logArea = document.getElementById('logArea');
+            const logEntries = Array.from(logArea.querySelectorAll('.log-entry'));
+            
+            if (logEntries.length === 0) {
+                log('No logs to copy', 'warning');
+                return;
+            }
+            
+            // Convert log entries to plain text
+            const logText = logEntries.map(entry => entry.textContent).join('\n');
+            
+            // Create a formatted report
+            const report = `SEO Guide Creator - System Test Report
+Generated: ${new Date().toLocaleString()}
+User: ${currentUser?.email || 'Not authenticated'}
+
+=== Test Results ===
+${logText}
+
+=== System Status ===
+Server: ${document.getElementById('server-status').className.includes('success') ? '✅ Online' : '❌ Offline'}
+Auth: ${document.getElementById('auth-status').className.includes('success') ? '✅ Authenticated' : '❌ Not authenticated'}
+DataForSEO: ${document.getElementById('dataforseo-status').className.includes('success') ? '✅ Configured' : '⚠️ Not configured'}
+Anthropic: ${document.getElementById('anthropic-status').className.includes('success') ? '✅ Configured' : '⚠️ Not configured'}
+
+=== Configuration ===
+Server URL: ${document.getElementById('serverUrl').value}
+Test Domain: ${document.getElementById('testDomain').value}
+Test About URL: ${document.getElementById('testAboutUrl').value}
+`;
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(report).then(() => {
+                log('✅ Logs copied to clipboard', 'success');
+                
+                // Visual feedback
+                const btn = event.target.closest('button');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '✅ Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            }).catch(err => {
+                log('Failed to copy logs: ' + err.message, 'error');
+            });
         }
         
         function setStatus(id, status, message = '') {
@@ -511,6 +610,11 @@
                     document.getElementById('userEmail').textContent = currentUser.email;
                     document.getElementById('sessionStatus').textContent = 'Active';
                     
+                    // Show admin bar if this is the admin user
+                    if (currentUser.email === 'addam@addhass.com') {
+                        showAdminBar();
+                    }
+                    
                     setStatus('auth-status', 'success', 'Authenticated');
                     return true;
                 } else {
@@ -528,6 +632,43 @@
                 log(`Auth initialization failed: ${error.message}`, 'error');
                 setStatus('auth-status', 'error', error.message);
                 return false;
+            }
+        }
+        
+        // Show admin bar for admin user
+        function showAdminBar() {
+            log('Showing admin bar for admin user', 'info');
+            
+            // Add body padding
+            document.body.classList.add('admin-mode');
+            
+            // Create admin bar if it doesn't exist
+            let adminBar = document.getElementById('adminBar');
+            if (!adminBar) {
+                adminBar = document.createElement('div');
+                adminBar.id = 'adminBar';
+                adminBar.innerHTML = `
+                    <span>🔧 Admin Mode</span>
+                    <a href="index.html">🏠 Homepage</a>
+                    <button id="adminPrefillBtn">Prefill Wild Donkey</button>
+                    <button id="adminLoadKeywordsBtn">Load Keywords</button>
+                    <a href="product-guide-builder-modular.html">📝 Main App</a>
+                `;
+                
+                document.body.insertBefore(adminBar, document.body.firstChild);
+                
+                // Setup button handlers
+                document.getElementById('adminPrefillBtn').onclick = () => {
+                    document.getElementById('testDomain').value = 'wilddonkeycompany.com';
+                    document.getElementById('testAboutUrl').value = 'https://wilddonkeycompany.com/pages/about-us';
+                    document.getElementById('testKeywords').value = 'vintage sweatshirts, mens sweatshirts, unisex sweatshirts';
+                    log('✅ Wild Donkey test data loaded', 'success');
+                };
+                
+                document.getElementById('adminLoadKeywordsBtn').onclick = () => {
+                    document.getElementById('testKeywords').value = 'vintage sweatshirts, mens sweatshirts, unisex sweatshirts, graphic sweatshirts, retro sweatshirts';
+                    log('✅ Keywords loaded', 'success');
+                };
             }
         }
         
