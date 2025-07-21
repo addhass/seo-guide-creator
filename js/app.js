@@ -272,7 +272,8 @@ class ProductGuideApp {
                     cursor: pointer;
                     font-size: 13px;
                     font-weight: 500;
-                ">Prefill Wild Donkey Data</button>
+                    min-width: 150px;
+                ">Prefill Wild Donkey</button>
                 <button id="adminLoadKeywordsBtn" style="
                     background: white;
                     color: #FFA500;
@@ -282,7 +283,8 @@ class ProductGuideApp {
                     cursor: pointer;
                     font-size: 13px;
                     font-weight: 500;
-                ">Load Sample Keywords</button>
+                    min-width: 150px;
+                ">Load Keywords</button>
                 <a href="test-full-system.html" style="
                     background: white;
                     color: #FFA500;
@@ -294,6 +296,8 @@ class ProductGuideApp {
                     font-weight: 500;
                     text-decoration: none;
                     display: inline-block;
+                    min-width: 150px;
+                    text-align: center;
                 ">🧪 System Test Suite</a>
             `;
             
