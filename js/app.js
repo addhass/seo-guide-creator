@@ -262,7 +262,21 @@ class ProductGuideApp {
             `;
             
             adminBar.innerHTML = `
-                <span>🔧 Admin Mode v2.7</span>
+                <span>🔧 Admin Mode v2.9</span>
+                <a href="index.html" style="
+                    background: white;
+                    color: #FFA500;
+                    border: none;
+                    padding: 0.25rem 0.75rem;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 13px;
+                    font-weight: 500;
+                    text-decoration: none;
+                    display: inline-block;
+                    min-width: 150px;
+                    text-align: center;
+                ">🏠 Homepage</a>
                 <button id="adminPrefillBtn" style="
                     background: white;
                     color: #FFA500;

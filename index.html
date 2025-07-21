@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Guide Creator - Generate AI-Powered Product Description Guides</title>
+    <meta name="description" content="Create customized SEO product description guides based on competitor analysis and AI recommendations">
+    
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-radius: var(--radius-lg);
+            margin-bottom: 3rem;
+        }
+        
+        .hero-section h1 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero-section p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .cta-buttons .btn {
+            background: white;
+            color: #667eea;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: var(--radius-md);
+        }
+        
+        .cta-buttons .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .cta-buttons .btn.secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .cta-buttons .btn.secondary:hover {
+            background: white;
+            color: #667eea;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+        
+        .feature-card p {
+            color: var(--muted-text);
+            font-size: 0.95rem;
+        }
+        
+        .steps-section {
+            background: #f8f9fa;
+            padding: 3rem 2rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 3rem;
+        }
+        
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .step {
+            text-align: center;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .step h4 {
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+        
+        .step p {
+            color: var(--muted-text);
+            font-size: 0.9rem;
+        }
+        
+        .admin-notice {
+            background: #fff3cd;
+            color: #856404;
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 2rem;
+            display: none;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-section p {
+                font-size: 1.1rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cta-buttons .btn {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Bar will be inserted here by JavaScript -->
+    
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <a href="#" class="logo">
+                    <div class="logo-icon">P</div>
+                    <span>Product Description Guide Builder</span>
+                </a>
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <button id="loginBtn" class="login-btn" style="
+                        background: var(--primary-color);
+                        color: white;
+                        border: none;
+                        padding: 0.5rem 1rem;
+                        border-radius: var(--radius-md);
+                        cursor: pointer;
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                        transition: all 0.2s;
+                    ">Login</button>
+                </div>
+            </div>
+        </header>
+        
+        <main class="main-content" style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+            <!-- Admin Notice -->
+            <div class="admin-notice" id="adminNotice">
+                🔧 Admin Mode Active - You have access to all features
+            </div>
+            
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <h1>Create SEO-Optimized Product Descriptions</h1>
+                <p>Generate comprehensive product description guides powered by AI and competitor analysis</p>
+                <div class="cta-buttons">
+                    <a href="product-guide-builder-modular.html" class="btn" id="mainCta">Get Started</a>
+                    <a href="dashboard.html" class="btn secondary">Manage API Keys</a>
+                </div>
+            </div>
+            
+            <!-- Features Section -->
+            <section style="margin-bottom: 3rem;">
+                <h2 style="text-align: center; margin-bottom: 2rem;">Powerful Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔍</div>
+                        <h3>Competitor Analysis</h3>
+                        <p>Automatically discover and analyze top competitors from search results</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🤖</div>
+                        <h3>AI-Powered Insights</h3>
+                        <p>Generate unique selling propositions and brand voice recommendations</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>SEO Optimization</h3>
+                        <p>Create descriptions optimized for your target keywords and search volume</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h3>Geographic Targeting</h3>
+                        <p>Tailor content for specific markets: UK, US, AU, CA, EU, or Global</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📦</div>
+                        <h3>Product Analysis</h3>
+                        <p>Extract and analyze competitor product descriptions automatically</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📝</div>
+                        <h3>Custom Guides</h3>
+                        <p>Generate comprehensive guides tailored to your brand and industry</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- How It Works Section -->
+            <section class="steps-section">
+                <h2 style="text-align: center;">How It Works</h2>
+                <div class="steps-grid">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h4>Enter Brand Info</h4>
+                        <p>Provide your brand details and target market</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h4>Upload Keywords</h4>
+                        <p>Add your keyword strategy file (CSV/TSV)</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h4>Find Competitors</h4>
+                        <p>Automatically discover top competitors</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h4>Generate Guide</h4>
+                        <p>Get your customized product description guide</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- CTA Section -->
+            <section style="text-align: center;">
+                <h2>Ready to Transform Your Product Descriptions?</h2>
+                <p style="color: var(--muted-text); margin-bottom: 2rem;">Join brands creating better product content with AI-powered insights</p>
+                <div class="cta-buttons">
+                    <a href="product-guide-builder-modular.html" class="btn" style="background: var(--primary-color); color: white;">Start Creating</a>
+                    <a href="system-test-suite.html" class="btn secondary" style="border: 2px solid var(--primary-color); color: var(--primary-color);">View System Status</a>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <!-- Cache Buster - MUST BE FIRST -->
+    <script src="js/cache-buster.js?v=2.9"></script>
+    
+    <!-- Supabase from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Load JavaScript Modules -->
+    <script src="js/config.js?v=2.9"></script>
+    <script src="js/supabase-client.js?v=2.9"></script>
+    
+    <script>
+        // Simple auth check for homepage
+        async function checkAuth() {
+            if (window.supabaseClient && window.supabaseClient.init) {
+                await window.supabaseClient.init();
+                
+                const { data: { user } } = await supabase.auth.getUser();
+                
+                if (user) {
+                    // Update login button
+                    const loginBtn = document.getElementById('loginBtn');
+                    loginBtn.textContent = 'My Account';
+                    loginBtn.onclick = () => window.location.href = 'dashboard.html';
+                    
+                    // Update main CTA
+                    document.getElementById('mainCta').textContent = 'Launch App';
+                    
+                    // Show admin notice if admin
+                    if (user.email === 'addam@addhass.com') {
+                        document.getElementById('adminNotice').style.display = 'block';
+                        showAdminBar();
+                    }
+                } else {
+                    document.getElementById('loginBtn').onclick = () => window.location.href = 'auth.html';
+                }
+            }
+        }
+        
+        // Show admin bar
+        function showAdminBar() {
+            const adminBar = document.createElement('div');
+            adminBar.id = 'adminBar';
+            adminBar.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 35px;
+                background: #FFA500;
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 1rem;
+                z-index: 10000;
+                font-size: 14px;
+                font-weight: 500;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            `;
+            
+            adminBar.innerHTML = `
+                <span>🔧 Admin Mode</span>
+                <a href="product-guide-builder-modular.html" style="background: white; color: #FFA500; padding: 0.25rem 0.75rem; border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: 500;">📝 Main App</a>
+                <a href="system-test-suite.html" style="background: white; color: #FFA500; padding: 0.25rem 0.75rem; border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: 500;">🧪 Test Suite</a>
+                <a href="dashboard.html" style="background: white; color: #FFA500; padding: 0.25rem 0.75rem; border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: 500;">🎯 Dashboard</a>
+            `;
+            
+            document.body.insertBefore(adminBar, document.body.firstChild);
+            document.body.style.paddingTop = '35px';
+        }
+        
+        // Initialize
+        checkAuth();
+    </script>
+</body>
+</html>

@@ -488,10 +488,13 @@
     </div>
     
     <!-- Scripts -->
+    <!-- Cache Buster - MUST BE FIRST -->
+    <script src="js/cache-buster.js?v=2.9"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/config.js"></script>
-    <script src="js/supabase-client.js"></script>
-    <script src="js/auth-helper.js"></script>
+    <script src="js/config.js?v=2.9"></script>
+    <script src="js/supabase-client.js?v=2.9"></script>
+    <script src="js/auth-helper.js?v=2.9"></script>
     
     <script>
         let supabaseInstance = null;
@@ -515,7 +518,7 @@
         }
         
         // Copy logs to clipboard
-        function copyLogs() {
+        function copyLogs(event) {
             const logArea = document.getElementById('logArea');
             const logEntries = Array.from(logArea.querySelectorAll('.log-entry'));
             
@@ -552,12 +555,14 @@ Test About URL: ${document.getElementById('testAboutUrl').value}
                 log('✅ Logs copied to clipboard', 'success');
                 
                 // Visual feedback
-                const btn = event.target.closest('button');
-                const originalText = btn.innerHTML;
-                btn.innerHTML = '✅ Copied!';
-                setTimeout(() => {
-                    btn.innerHTML = originalText;
-                }, 2000);
+                const btn = document.querySelector('button[onclick*="copyLogs"]');
+                if (btn) {
+                    const originalText = btn.innerHTML;
+                    btn.innerHTML = '✅ Copied!';
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                    }, 2000);
+                }
             }).catch(err => {
                 log('Failed to copy logs: ' + err.message, 'error');
             });
