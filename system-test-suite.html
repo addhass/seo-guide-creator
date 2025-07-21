@@ -588,15 +588,23 @@ Test About URL: ${document.getElementById('testAboutUrl').value}
             try {
                 log('Initializing authentication...', 'info');
                 
-                // Initialize Supabase client directly
-                const SUPABASE_URL = 'https://jdqdfejuesqbcxjwbcwl.supabase.co';
-                const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpkcWRmZWp1ZXNxYmN4andiY3dsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMwMjQyNjgsImV4cCI6MjA2ODYwMDI2OH0._co76nJaxBJDKN25wpbbTMJE5QEY3wsQ-1H9MvrMXGs';
+                // Wait for supabaseClient module to be available
+                if (!window.supabaseClient) {
+                    log('Waiting for supabaseClient module...', 'info');
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
                 
-                supabaseInstance = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                
-                // Initialize supabaseClient module if available
+                // Initialize supabaseClient module
                 if (window.supabaseClient && window.supabaseClient.init) {
-                    await window.supabaseClient.init();
+                    supabaseInstance = await window.supabaseClient.init();
+                    log('✅ Using supabaseClient module', 'success');
+                } else {
+                    // Fallback: Initialize Supabase client directly
+                    const SUPABASE_URL = 'https://jdqdfejuesqbcxjwbcwl.supabase.co';
+                    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpkcWRmZWp1ZXNxYmN4andiY3dsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMwMjQyNjgsImV4cCI6MjA2ODYwMDI2OH0._co76nJaxBJDKN25wpbbTMJE5QEY3wsQ-1H9MvrMXGs';
+                    
+                    supabaseInstance = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    log('⚠️ Using direct Supabase client (API keys may not work)', 'warning');
                 }
                 
                 // Get current session
@@ -1257,21 +1265,25 @@ Content: ${pageData.text?.substring(0, 2000)}`
             // First check server
             await testServerHealth();
             
-            // Add a small delay to ensure Supabase is fully loaded
+            // Wait longer to ensure all scripts are loaded
+            log('Loading authentication modules...', 'info');
             setTimeout(async () => {
                 const isAuth = await initAuth();
                 if (isAuth) {
                     await checkApiKeys();
                 } else {
                     // Try one more time in case of timing issues
+                    log('Retrying authentication...', 'info');
                     setTimeout(async () => {
                         const retryAuth = await initAuth();
                         if (retryAuth) {
                             await checkApiKeys();
+                        } else {
+                            log('⚠️ Authentication failed. Please check your login.', 'warning');
                         }
-                    }, 1000);
+                    }, 2000);
                 }
-            }, 500);
+            }, 1500);
         });
     </script>
 </body>
