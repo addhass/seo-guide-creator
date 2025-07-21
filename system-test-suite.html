@@ -737,8 +737,17 @@ Test About URL: ${document.getElementById('testAboutUrl').value}
         // Check API keys
         async function checkApiKeys() {
             try {
+                // Debug: Check what's available
+                log(`Debug: window.supabaseClient = ${!!window.supabaseClient}`, 'info');
+                if (window.supabaseClient) {
+                    log(`Debug: supabaseClient.apiKeys = ${!!window.supabaseClient.apiKeys}`, 'info');
+                    log(`Debug: supabaseClient properties = ${Object.keys(window.supabaseClient).join(', ')}`, 'info');
+                }
+                
                 if (!window.supabaseClient || !window.supabaseClient.apiKeys) {
                     log('API keys module not available', 'warning');
+                    log('Debug: Full window.supabaseClient:', 'info');
+                    console.log(window.supabaseClient);
                     return;
                 }
                 
