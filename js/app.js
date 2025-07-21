@@ -236,7 +236,7 @@ class ProductGuideApp {
     
     // Show admin bar for specific user
     showAdminBar() {
-        console.log('🔧 Showing admin bar for admin user');
+        console.log('🔧 Showing admin bar for admin user [v2.7]');
         
         // Create admin bar if it doesn't exist
         let adminBar = document.getElementById('adminBar');
@@ -262,7 +262,7 @@ class ProductGuideApp {
             `;
             
             adminBar.innerHTML = `
-                <span>🔧 Admin Mode</span>
+                <span>🔧 Admin Mode v2.7</span>
                 <button id="adminPrefillBtn" style="
                     background: white;
                     color: #FFA500;
@@ -283,6 +283,18 @@ class ProductGuideApp {
                     font-size: 13px;
                     font-weight: 500;
                 ">Load Sample Keywords</button>
+                <a href="test-full-system.html" style="
+                    background: white;
+                    color: #FFA500;
+                    border: none;
+                    padding: 0.25rem 0.75rem;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 13px;
+                    font-weight: 500;
+                    text-decoration: none;
+                    display: inline-block;
+                ">🧪 System Test Suite</a>
             `;
             
             document.body.insertBefore(adminBar, document.body.firstChild);

@@ -39,6 +39,11 @@
 </head>
 <body>
     <div class="app-container">
+        <!-- Quick Admin Link for Testing -->
+        <div id="tempAdminLink" style="display:none; background: #FFA500; color: white; padding: 10px; text-align: center;">
+            <a href="test-full-system.html" style="color: white; font-weight: bold;">🧪 Go to System Test Suite</a>
+        </div>
+        
         <!-- Header -->
         <header class="header">
             <div class="header-content">
@@ -479,7 +484,7 @@
     <script src="js/competitor-analysis.js?v=2.5"></script>
     <script src="js/product-analyzer.js?v=2.5"></script>
     <script src="js/guide-generation.js?v=2.5"></script>
-    <script src="js/app.js?v=2.5"></script>
+    <script src="js/app.js?v=2.7&t=20250121"></script>
     
     <!-- Cache Busting Script -->
     <script>
@@ -505,6 +510,16 @@
             }
             
             window.cacheBreaker = Date.now();
+            
+            // Temporary admin link check
+            setTimeout(async () => {
+                if (window.supabaseClient && window.supabaseClient.auth) {
+                    const user = await window.supabaseClient.auth.getUser();
+                    if (user && user.email === 'addam@addhass.com') {
+                        document.getElementById('tempAdminLink').style.display = 'block';
+                    }
+                }
+            }, 2000);
         });
     </script>
 </body>

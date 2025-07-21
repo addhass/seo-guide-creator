@@ -268,6 +268,10 @@
     <script>
         let isSignUp = false;
         
+        // Check if we're in a popup (from URL param or window.opener)
+        const urlParams = new URLSearchParams(window.location.search);
+        const isPopup = urlParams.get('popup') === 'true' || window.opener !== null;
+        
         // Initialize Supabase
         async function init() {
             await window.supabaseClient.init();
@@ -275,7 +279,15 @@
             // Check if user is already logged in
             const user = await window.supabaseClient.auth.getUser();
             if (user) {
-                window.location.href = 'dashboard.html';
+                if (isPopup) {
+                    // Show success message before closing
+                    showAlert('Login successful! Closing window...', 'success');
+                    setTimeout(() => {
+                        window.close();
+                    }, 1000);
+                } else {
+                    window.location.href = 'dashboard.html';
+                }
             }
         }
         
@@ -305,10 +317,17 @@
         // Google Sign In
         document.getElementById('googleSignInBtn').addEventListener('click', async () => {
             try {
+                // Determine redirect URL based on popup mode
+                let redirectUrl = 'https://addhass.github.io/seo-guide-creator/dashboard.html';
+                if (isPopup) {
+                    // For popup mode, redirect back to auth page which will auto-close
+                    redirectUrl = 'https://addhass.github.io/seo-guide-creator/auth.html?popup=true';
+                }
+                
                 const { data, error } = await supabase.auth.signInWithOAuth({
                     provider: 'google',
                     options: {
-                        redirectTo: `https://addhass.github.io/seo-guide-creator/dashboard.html`
+                        redirectTo: redirectUrl
                     }
                 });
                 
@@ -346,8 +365,17 @@
                 if (isSignUp && result.data.user && !result.data.session) {
                     showAlert('Please check your email to confirm your account.', 'success');
                 } else {
-                    // Redirect to dashboard
-                    window.location.href = 'dashboard.html';
+                    // Successful login
+                    if (isPopup) {
+                        // Show success and close popup
+                        showAlert('Login successful! Closing window...', 'success');
+                        setTimeout(() => {
+                            window.close();
+                        }, 1000);
+                    } else {
+                        // Redirect to dashboard
+                        window.location.href = 'dashboard.html';
+                    }
                 }
             } catch (error) {
                 showAlert(error.message);
