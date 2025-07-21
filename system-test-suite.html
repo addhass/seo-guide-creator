@@ -598,13 +598,20 @@ Test About URL: ${document.getElementById('testAboutUrl').value}
                 if (window.supabaseClient && window.supabaseClient.init) {
                     supabaseInstance = await window.supabaseClient.init();
                     log('✅ Using supabaseClient module', 'success');
+                    
+                    // Verify all modules are loaded
+                    if (window.supabaseClient.apiKeys) {
+                        log('✅ API keys module is available', 'success');
+                    } else {
+                        log('⚠️ API keys module not found', 'warning');
+                    }
                 } else {
                     // Fallback: Initialize Supabase client directly
                     const SUPABASE_URL = 'https://jdqdfejuesqbcxjwbcwl.supabase.co';
                     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpkcWRmZWp1ZXNxYmN4andiY3dsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMwMjQyNjgsImV4cCI6MjA2ODYwMDI2OH0._co76nJaxBJDKN25wpbbTMJE5QEY3wsQ-1H9MvrMXGs';
                     
                     supabaseInstance = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                    log('⚠️ Using direct Supabase client (API keys may not work)', 'warning');
+                    log('⚠️ Using direct Supabase client (API keys will NOT work)', 'warning');
                 }
                 
                 // Get current session
@@ -688,8 +695,17 @@ Test About URL: ${document.getElementById('testAboutUrl').value}
         // Get auth token
         async function getAuthToken() {
             try {
-                const { data: { session } } = await supabaseInstance.auth.getSession();
-                return session?.access_token || null;
+                // Use the proper auth module from supabaseClient
+                if (window.supabaseClient && window.supabaseClient.auth) {
+                    const user = await window.supabaseClient.auth.getUser();
+                    const { data: { session } } = await window.supabaseClient.auth.supabase.auth.getSession();
+                    return session?.access_token || null;
+                } else if (supabaseInstance) {
+                    // Fallback to direct instance
+                    const { data: { session } } = await supabaseInstance.auth.getSession();
+                    return session?.access_token || null;
+                }
+                return null;
             } catch (error) {
                 log(`Failed to get auth token: ${error.message}`, 'error');
                 return null;
@@ -1274,25 +1290,35 @@ Content: ${pageData.text?.substring(0, 2000)}`
             // First check server
             await testServerHealth();
             
-            // Wait longer to ensure all scripts are loaded
-            log('Loading authentication modules...', 'info');
-            setTimeout(async () => {
-                const isAuth = await initAuth();
-                if (isAuth) {
-                    await checkApiKeys();
+            // Wait for window.supabaseClient to be available
+            let attempts = 0;
+            const maxAttempts = 10;
+            
+            const checkAndInit = async () => {
+                attempts++;
+                
+                if (window.supabaseClient && window.supabaseClient.init && window.supabaseClient.apiKeys) {
+                    log('✅ All modules loaded successfully', 'success');
+                    const isAuth = await initAuth();
+                    if (isAuth) {
+                        await checkApiKeys();
+                    }
                 } else {
-                    // Try one more time in case of timing issues
-                    log('Retrying authentication...', 'info');
-                    setTimeout(async () => {
-                        const retryAuth = await initAuth();
-                        if (retryAuth) {
+                    if (attempts < maxAttempts) {
+                        log(`Waiting for modules... (attempt ${attempts}/${maxAttempts})`, 'info');
+                        setTimeout(checkAndInit, 500);
+                    } else {
+                        log('⚠️ Modules failed to load after 5 seconds, using fallback', 'warning');
+                        const isAuth = await initAuth();
+                        if (isAuth) {
                             await checkApiKeys();
-                        } else {
-                            log('⚠️ Authentication failed. Please check your login.', 'warning');
                         }
-                    }, 2000);
+                    }
                 }
-            }, 1500);
+            };
+            
+            // Start checking after a brief delay
+            setTimeout(checkAndInit, 500);
         });
     </script>
 </body>
