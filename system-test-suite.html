@@ -959,6 +959,10 @@ Test About URL: ${document.getElementById('testAboutUrl').value}
             try {
                 log(`Testing competitor discovery with keywords: ${keywords.join(', ')}`, 'info');
                 
+                // Debug: Check what we're sending
+                log(`Debug: Sending request with token: ${token ? 'Present' : 'Missing'}`, 'info');
+                log(`Debug: Token length: ${token ? token.length : 0}`, 'info');
+                
                 const response = await fetch(`${serverUrl}/get-serp-competitors-sequential`, {
                     method: 'POST',
                     headers: {

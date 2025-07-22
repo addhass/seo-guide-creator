@@ -620,27 +620,23 @@ app.post('/get-serp-competitors', async (req, res) => {
 
         console.log(`📋 Prepared ${dataForSeoTasks.length} SERP requests`);
 
-        // Get DataForSEO credentials from API.txt file
-        const fs = require('fs');
-        const path = require('path');
-        
+        // Get DataForSEO credentials from user's stored API keys or environment
         let dataForSeoAuth;
-        try {
-            const apiContent = fs.readFileSync(path.join(__dirname, 'API.txt'), 'utf8');
-            const usernameMatch = apiContent.match(/DATAFORSEO_USERNAME=(.+)/);
-            const passwordMatch = apiContent.match(/DATAFORSEO_PASSWORD=(.+)/);
-            
-            if (usernameMatch && passwordMatch) {
-                const username = usernameMatch[1].trim();
-                const password = passwordMatch[1].trim();
-                dataForSeoAuth = Buffer.from(`${username}:${password}`).toString('base64');
-                console.log(`🔐 DataForSEO credentials loaded: ${username}`);
-            } else {
-                throw new Error('DataForSEO credentials not found in API.txt');
-            }
-        } catch (error) {
-            console.error('❌ Failed to load DataForSEO credentials:', error.message);
-            throw new Error('DataForSEO credentials not available');
+        
+        if (req.apiKeys && req.apiKeys.dataforseo) {
+            // Use user's stored credentials
+            const parts = req.apiKeys.dataforseo.split(':');
+            const username = parts[0];
+            const password = parts[1];
+            dataForSeoAuth = Buffer.from(`${username}:${password}`).toString('base64');
+            console.log(`🔐 DataForSEO credentials loaded from user API keys: ${username}`);
+        } else if (process.env.DATAFORSEO_LOGIN && process.env.DATAFORSEO_PASSWORD) {
+            // Fallback to environment variables
+            dataForSeoAuth = Buffer.from(`${process.env.DATAFORSEO_LOGIN}:${process.env.DATAFORSEO_PASSWORD}`).toString('base64');
+            console.log(`🔐 DataForSEO credentials loaded from environment`);
+        } else {
+            console.error('❌ DataForSEO credentials not available');
+            return res.status(401).json({ error: 'DataForSEO credentials not configured. Please add your API keys in the dashboard.' });
         }
         
         const dataForSeoResponse = await fetch('https://api.dataforseo.com/v3/serp/google/organic/live/advanced', {
@@ -764,27 +760,23 @@ app.post('/get-serp-competitors-sequential', async (req, res) => {
         const { location_code, language_code } = utils.resolveLocationAndLanguage(location, language);
         console.log(`🎯 Using location: ${location_code}, language: ${language_code}`);
 
-        // Get DataForSEO credentials from API.txt file
-        const fs = require('fs');
-        const path = require('path');
-        
+        // Get DataForSEO credentials from user's stored API keys or environment
         let dataForSeoAuth;
-        try {
-            const apiContent = fs.readFileSync(path.join(__dirname, 'API.txt'), 'utf8');
-            const usernameMatch = apiContent.match(/DATAFORSEO_USERNAME=(.+)/);
-            const passwordMatch = apiContent.match(/DATAFORSEO_PASSWORD=(.+)/);
-            
-            if (usernameMatch && passwordMatch) {
-                const username = usernameMatch[1].trim();
-                const password = passwordMatch[1].trim();
-                dataForSeoAuth = Buffer.from(`${username}:${password}`).toString('base64');
-                console.log(`🔐 DataForSEO credentials loaded: ${username}`);
-            } else {
-                throw new Error('DataForSEO credentials not found in API.txt');
-            }
-        } catch (error) {
-            console.error('❌ Failed to load DataForSEO credentials:', error.message);
-            throw new Error('DataForSEO credentials not available');
+        
+        if (req.apiKeys && req.apiKeys.dataforseo) {
+            // Use user's stored credentials
+            const parts = req.apiKeys.dataforseo.split(':');
+            const username = parts[0];
+            const password = parts[1];
+            dataForSeoAuth = Buffer.from(`${username}:${password}`).toString('base64');
+            console.log(`🔐 DataForSEO credentials loaded from user API keys: ${username}`);
+        } else if (process.env.DATAFORSEO_LOGIN && process.env.DATAFORSEO_PASSWORD) {
+            // Fallback to environment variables
+            dataForSeoAuth = Buffer.from(`${process.env.DATAFORSEO_LOGIN}:${process.env.DATAFORSEO_PASSWORD}`).toString('base64');
+            console.log(`🔐 DataForSEO credentials loaded from environment`);
+        } else {
+            console.error('❌ DataForSEO credentials not available');
+            return res.status(401).json({ error: 'DataForSEO credentials not configured. Please add your API keys in the dashboard.' });
         }
 
         // Process keywords sequentially to avoid batch request issues
