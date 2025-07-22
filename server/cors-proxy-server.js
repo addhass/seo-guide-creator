@@ -1150,6 +1150,24 @@ Be specific and actionable in your analysis. Focus on insights that would help w
 
         console.log('📤 Sending analysis request to Claude...');
         
+        // Get Anthropic API key
+        let apiKey;
+        if (req.apiKeys && req.apiKeys.anthropic) {
+            // Use user's stored API key
+            apiKey = req.apiKeys.anthropic;
+        } else {
+            // Fallback to environment variable
+            apiKey = process.env.ANTHROPIC_API_KEY || '';
+        }
+        
+        if (!apiKey) {
+            console.log('No Anthropic API key found. req.apiKeys:', req.apiKeys);
+            console.log('Environment ANTHROPIC_API_KEY:', process.env.ANTHROPIC_API_KEY ? 'Set' : 'Not set');
+            return res.status(401).json({ 
+                error: 'Anthropic API key not configured. Please add your API key in the dashboard.'
+            });
+        }
+        
         // Call Claude API for analysis
         const claudeResponse = await fetch('https://api.anthropic.com/v1/messages', {
             method: 'POST',

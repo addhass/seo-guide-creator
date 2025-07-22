@@ -88,7 +88,12 @@ class ProductAnalyzer {
         // Extract domain from URL if needed
         const cleanDomain = domain.replace(/^https?:\/\//, '').replace(/\/$/, '');
         
-        const response = await fetch('http://localhost:3001/analyze-competitor-products', {
+        // Check if auth helper is available
+        if (!window.authHelper || !window.authHelper.authenticatedFetch) {
+            throw new Error('Authentication required. Please log in and configure your API keys in the dashboard.');
+        }
+        
+        const response = await window.authHelper.authenticatedFetch(`${this.baseUrl}/analyze-competitor-products`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -97,7 +102,11 @@ class ProductAnalyzer {
         });
 
         if (!response.ok) {
-            throw new Error(`Server error: ${response.status}`);
+            const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+            if (errorData.error && errorData.error.includes('API key')) {
+                throw new Error(`${errorData.error} Please visit the dashboard to add your API keys.`);
+            }
+            throw new Error(errorData.error || `Server error: ${response.status}`);
         }
 
         return await response.json();
